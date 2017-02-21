@@ -36,6 +36,7 @@ namespace LemonadeStand
 
         public void DetermineBuyers(string weather, double lemonadePrice)
         {
+            customers.Clear();
             if(weather == "Sunny")
             {
                 if(lemonadePrice <= .50)
