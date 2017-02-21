@@ -6,18 +6,21 @@ using System.Threading.Tasks;
 
 namespace LemonadeStand
 {
-    class Player
+    public class Player
     {
         public string playerName;
-        public double budget;
-        public Player(string playerName)
+        public Player()
         {
-            this.playerName = playerName;
-            budget = 10;
+
         }
 
-        public void fafa()
+        public string PromptName()
         {
+            Console.Write("\nPlease enter your name: ");
+            playerName = Console.ReadLine();
+            return (playerName);
         }
+
+
     }
 }

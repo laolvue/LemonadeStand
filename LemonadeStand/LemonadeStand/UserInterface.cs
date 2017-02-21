@@ -8,16 +8,15 @@ namespace LemonadeStand
 {
     public class UserInterface
     {
-        Player player;
+        Store store;
         Weather weather;
-        Inventory inventory;
         Day day;
         public int gameRound;
         public UserInterface()
         {
             gameRound = 0;
             day = new Day();
-            inventory = new Inventory();
+            
         }
 
 
@@ -36,10 +35,8 @@ namespace LemonadeStand
 
         public void PromptName()
         {
-            Console.Write("\nPlease enter your name: ");
-            string playerName = Console.ReadLine();
-            player = new Player(playerName);
-
+            store = new Store();
+            Console.WriteLine(store.playerName);
         }
 
         public void DisplayWeather()
@@ -62,21 +59,26 @@ namespace LemonadeStand
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"The Game is Starting... Good Luck {player.playerName}!");
+            Console.WriteLine($"The Game is Starting... Good Luck {store.playerName}!");
             Console.ResetColor();
-            Console.ForegroundColor = ConsoleColor.Cyan;
             weather.DetermineWeather();
-            Console.WriteLine($"\n\n{day.dayNames[weather.dayCounter]}'s actual weather: {weather.accurateWeather[weather.dayCounter]}\nYour starting budget is: ${player.budget}");
-            Console.WriteLine("\nInventory costs:\n$3.00/pitcher of water\t$0.50/lemon\t$0.50/sugar\t$0.50/ice cube");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"\n\n{day.dayNames[weather.dayCounter]}'s actual weather: {weather.accurateWeather[weather.dayCounter]}\nYour starting budget is: ${store.budget.ToString("0.00")}");
+            store.DisplayInventory();
             Console.ResetColor();
         }
 
         public void BuyIngredients()
         {
-            Console.WriteLine("\nEnter how much inventory to buy for today. !Remember! You need to buy atleast ONE OF EACH ingredient to be able to make lemonade. More customers will buy if your lemonade is good!");
-            Console.ReadLine();
+            Console.WriteLine("\nBuy ingredients! You need to buy atleast ONE OF EACH ingredient in order make lemonade. \nRemember: Tasty lemonade = More sales!");
             Console.Write("Number of pitchers to make: ");
-            Console.ReadLine();
+            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenPitchers(int.Parse(Console.ReadLine())).ToString("0.00")}");
+            Console.Write("How many lemons per pitcher: ");
+            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenLemons(int.Parse(Console.ReadLine())).ToString("0.00")}");
+            Console.Write("How many sugar cubes per pitcher: ");
+            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenSugar(int.Parse(Console.ReadLine())).ToString("0.00")}");
+            Console.Write("How many ice cubes per pitcher: ");
+            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenIce(int.Parse(Console.ReadLine())).ToString("0.00")}");
         }
 
 
