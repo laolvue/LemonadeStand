@@ -10,18 +10,25 @@ namespace LemonadeStand
     {
         Inventory inventory;
         Player player;
+        Customer customer;
         public string playerName;
         public double budget;
+        public double startingBudget;
+        public double sales;
         public int numberOfPitchers;
         public int numberOfLemons;
         public int numberOfSugar;
         public int numberOfIce;
         public double costOfLemonade;
-        public Store()
+        public int purchases;
+        public double profit;
+        public Store(double budgetRemaining)
         {
             inventory = new Inventory();
             player = new Player();
-            budget = 10;
+            customer = new Customer();
+            budget = budgetRemaining;
+            startingBudget = budgetRemaining;
             playerName = player.PromptName();
             costOfLemonade = 0.50;
         }
@@ -67,6 +74,42 @@ namespace LemonadeStand
             costOfLemonade -= 10;
         }
 
+        public void DetermineNumberOfBuyers(string weather)
+        {
+            customer.DetermineNumberOfCustomers(weather);
+            customer.DetermineBuyers(weather, costOfLemonade);
+        }
 
+        public void DetermineSales()
+        {
+            foreach (int buy in customer.customers)
+            {
+                if (buy == 1)
+                {
+                    purchases++;
+                    sales += costOfLemonade;
+                }
+                else
+                    continue;
+            }
+        }
+
+        public void DetermineProfit()
+        {
+            profit = (budget + sales)-startingBudget;
+            startingBudget = (budget + sales);
+        }
+        public void DisplayResults()
+        {
+            Console.Clear();
+            Console.WriteLine($"Total customer visits: {customer.totalCustomers}");
+            DetermineSales();
+            Console.WriteLine($"Total number of purchases: {purchases}");
+            Console.WriteLine($"Total sales: ${sales.ToString("0.00")}");
+            DetermineProfit();
+            Console.WriteLine($"Profit: ${profit.ToString("0.00")}");
+            Console.WriteLine($"\nBudget remaining: {startingBudget.ToString("0.00")}");
+            Console.ReadLine();
+        }
     }
 }

@@ -32,7 +32,6 @@ namespace LemonadeStand
             {
                 totalCustomers = customerVisit.Next(5, 10);
             }
-            Console.WriteLine($"total customer visits: {totalCustomers}");
         }
 
         public void DetermineBuyers(string weather, double lemonadePrice)
@@ -173,7 +172,7 @@ namespace LemonadeStand
                     for (int i = 0; i < totalCustomers; i++)
                     {
                         int customerBuying = customerVisit.Next(1, 10);
-                        if (customerBuying > 0 && customerBuying <= 3)
+                        if (customerBuying > 0 && customerBuying <= 2)
                         {
                             customers.Add(1);
                         }
@@ -186,7 +185,7 @@ namespace LemonadeStand
                     for (int i = 0; i < totalCustomers; i++)
                     {
                         int customerBuying = customerVisit.Next(1, 10);
-                        if (customerBuying > 0 && customerBuying <= 2)
+                        if (customerBuying > 0 && customerBuying <= 1)
                         {
                             customers.Add(1);
                         }

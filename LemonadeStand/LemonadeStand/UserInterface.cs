@@ -12,12 +12,10 @@ namespace LemonadeStand
         Weather weather;
         Day day;
         public int gameRound;
-        Customer customer;
         public UserInterface()
         {
             gameRound = 0;
             day = new Day();
-            customer = new Customer();
             
         }
 
@@ -37,7 +35,7 @@ namespace LemonadeStand
 
         public void PromptName()
         {
-            store = new Store();
+            store = new Store(10);
             Console.WriteLine(store.playerName);
         }
 
@@ -65,7 +63,7 @@ namespace LemonadeStand
             Console.ResetColor();
             weather.DetermineWeather();
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"\n\n{day.dayNames[weather.dayCounter]}'s actual weather: {weather.accurateWeather[weather.dayCounter]}\nYour starting budget is: ${store.budget.ToString("0.00")}");
+            Console.WriteLine($"\n\n{day.dayNames[weather.dayCounter]}'s actual weather: {weather.accurateWeather[weather.dayCounter]}\nYour starting budget is: ${store.startingBudget.ToString("0.00")}");
             store.DisplayInventory();
             Console.ResetColor();
         }
@@ -102,10 +100,11 @@ namespace LemonadeStand
             } while (input != 0);
         }
 
-        public void Buyers()
+        public void DisplayCustomers()
         {
-            customer.DetermineNumberOfCustomers(weather.accurateWeather[weather.dayCounter]);
-            customer.DetermineBuyers(weather.accurateWeather[weather.dayCounter], store.costOfLemonade);
+            store.DetermineNumberOfBuyers(weather.accurateWeather[weather.dayCounter]);
+            store.DisplayResults();
+
         }
 
 
