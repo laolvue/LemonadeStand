@@ -14,7 +14,7 @@ namespace LemonadeStand
         public int gameRound;
         public UserInterface()
         {
-            gameRound = 0;
+            
             day = new Day();
             
         }
@@ -41,6 +41,7 @@ namespace LemonadeStand
 
         public void DisplayWeather()
         {
+            gameRound = 0;
             weather = new Weather(gameRound);
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -110,11 +111,28 @@ namespace LemonadeStand
             store.DisplayResults();
         }
 
+        public void DetermineLose()
+        {
+            store.ResetNewDay();
+            if (store.startingBudget <= 0)
+            {
+                Console.WriteLine($"\n\nYOU LOSE! You have gone bankrupt with a balance of: -${(store.startingBudget*-1).ToString("0.00")}");
+                gameRound = 6;
+            }
+            else if (store.startingBudget > 0 && store.startingBudget<4.50)
+            {
+                Console.WriteLine($"\n\nYOU LOSE! You do not have enough money to purchase ingredients for your business. Your balance: ${(store.startingBudget).ToString("0.00")}");
+                gameRound = 6;
+            }
+            else if(store.startingBudget > 0 && gameRound == 6)
+            {
+                Console.WriteLine($"\n\nYou Win! Your ending balance for the week is: ${store.startingBudget.ToString("0.00")}");
+            }
+        }
         public void StartNewRound()
         {
             gameRound++;
             weather.dayCounter = gameRound;
-            store.ResetNewDay();
             if(gameRound == 7)
             {
                 return;
@@ -122,16 +140,16 @@ namespace LemonadeStand
             else
             {
                 Console.WriteLine($"\n\nGet ready for DAY {gameRound + 1}! Your remaining budget is: ${store.startingBudget.ToString("0.00")}");
+                Console.Write("Press Enter to continue...");
                 Console.ReadLine();
             }
         }
 
         public int StartNewGame()
         {
-            Console.Clear();
-            Console.WriteLine($"You Win! Your ending balance for the week is: ${store.startingBudget.ToString("0.00")}");
             Console.WriteLine("\nWould you like to play again?\t1: Yes\t2: No");
             int playAgain = int.Parse(Console.ReadLine());
+            Console.Clear();
             return (playAgain);
         }
 

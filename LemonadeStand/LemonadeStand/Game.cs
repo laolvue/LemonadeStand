@@ -30,6 +30,7 @@ namespace LemonadeStand
                     userInterface.DetermineCostOfLemonade();
                     userInterface.DetermineBuyers();
                     userInterface.DisplayDayResults();
+                    userInterface.DetermineLose();
                     userInterface.StartNewRound();
                 }
                 restart = userInterface.StartNewGame();
