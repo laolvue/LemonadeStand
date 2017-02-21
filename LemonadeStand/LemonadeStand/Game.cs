@@ -17,20 +17,26 @@ namespace LemonadeStand
 
         public void StartGame()
         {
-            userInterface.DisplayGreetings();
-            userInterface.PromptName();
-            userInterface.DisplayWeather();
-            do
+            int restart = 1;
+            while(restart == 1)
             {
-                userInterface.StartDay();
-                userInterface.BuyIngredients();
-                userInterface.DetermineCostOfLemonade();
-                userInterface.DetermineBuyers();
-                userInterface.DisplayDayResults();
-                userInterface.StartNewRound();
-            } while (userInterface.gameRound < 8);
- 
-            
+                userInterface.DisplayGreetings();
+                userInterface.PromptName();
+                userInterface.DisplayWeather();
+                while (userInterface.gameRound <= 6)
+                {
+                    userInterface.StartDay();
+                    userInterface.BuyIngredients();
+                    userInterface.DetermineCostOfLemonade();
+                    userInterface.DetermineBuyers();
+                    userInterface.DisplayDayResults();
+                    userInterface.StartNewRound();
+                }
+                restart = userInterface.StartNewGame();
+            }
+
+
+
 
 
         }

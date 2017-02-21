@@ -63,7 +63,7 @@ namespace LemonadeStand
             Console.ResetColor();
             weather.DetermineWeather();
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"\n\n{day.dayNames[weather.dayCounter]}'s actual weather: {weather.accurateWeather[weather.dayCounter]}\nYour starting budget is: ${store.startingBudget.ToString("0.00")}");
+            Console.WriteLine($"\n\n{day.dayNames[gameRound]}'s forecast: {weather.forecast[gameRound]}\n{day.dayNames[gameRound]}'s actual weather: {weather.accurateWeather[gameRound]}\nYour starting budget is: ${store.startingBudget.ToString("0.00")}");
             store.DisplayInventory();
             Console.ResetColor();
         }
@@ -113,10 +113,26 @@ namespace LemonadeStand
         public void StartNewRound()
         {
             gameRound++;
+            weather.dayCounter = gameRound;
             store.ResetNewDay();
-            Console.WriteLine($"\n\nGet ready for DAY {gameRound+1}! Your remaining budget is: ${store.startingBudget.ToString("0.00")}");
-            Console.ReadLine();
-            
+            if(gameRound == 7)
+            {
+                return;
+            }
+            else
+            {
+                Console.WriteLine($"\n\nGet ready for DAY {gameRound + 1}! Your remaining budget is: ${store.startingBudget.ToString("0.00")}");
+                Console.ReadLine();
+            }
+        }
+
+        public int StartNewGame()
+        {
+            Console.Clear();
+            Console.WriteLine($"You Win! Your ending balance for the week is: ${store.startingBudget.ToString("0.00")}");
+            Console.WriteLine("\nWould you like to play again?\t1: Yes\t2: No");
+            int playAgain = int.Parse(Console.ReadLine());
+            return (playAgain);
         }
 
     }

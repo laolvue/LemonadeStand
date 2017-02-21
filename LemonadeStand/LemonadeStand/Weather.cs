@@ -52,15 +52,11 @@ namespace LemonadeStand
             result = forecastWeather.Next(1, 7);//randomizes a number between 1-5. A number between (1-3) will return the forecasted weather, otherwise weather will change.
             if (weatherOfDay[dayCounter] < 3)
             {
-                if(result <= 4)
+                if(result <= 5)
                 {
                     accurateWeather.Add("Sunny");
                 }
-                else if (result == 5)
-                {
-                    accurateWeather.Add("Rainy");
-                }
-                else if (result == 6)
+                else if (result ==6)
                 {
                     accurateWeather.Add("Cloudy");
                 }
@@ -71,17 +67,12 @@ namespace LemonadeStand
                 {
                     accurateWeather.Add("Rainy");
                 }
-                else if (result == 5)
-                {
-                    accurateWeather.Add("Sunny");
-                }
-                else if (result == 6)
+                else if (result > 4)
                 {
                     accurateWeather.Add("Cloudy");
                 }
             }
-            else if (weatherOfDay[dayCounter] == 4
-                )
+            else if (weatherOfDay[dayCounter] == 4)
             {
                 if (result <= 4)
                 {
