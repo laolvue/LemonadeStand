@@ -12,10 +12,12 @@ namespace LemonadeStand
         Weather weather;
         Day day;
         public int gameRound;
+        Customer customer;
         public UserInterface()
         {
             gameRound = 0;
             day = new Day();
+            customer = new Customer();
             
         }
 
@@ -98,6 +100,12 @@ namespace LemonadeStand
                     store.DecreaseCharge();
                 }
             } while (input != 0);
+        }
+
+        public void Buyers()
+        {
+            customer.DetermineNumberOfCustomers(weather.accurateWeather[weather.dayCounter]);
+            customer.DetermineBuyers(weather.accurateWeather[weather.dayCounter], store.costOfLemonade);
         }
 
 

@@ -23,6 +23,7 @@ namespace LemonadeStand
             userInterface.StartDay();
             userInterface.BuyIngredients();
             userInterface.DetermineCostOfLemonade();
+            userInterface.Buyers();
 
 
         }

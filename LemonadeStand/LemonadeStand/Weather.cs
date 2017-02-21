@@ -8,13 +8,14 @@ namespace LemonadeStand
 {
     class Weather
     {
-        public Random forecastWeather = new Random();
+        public Random forecastWeather;
         public List<string> forecast;
         public List<string> accurateWeather;
         public List<int> weatherOfDay;
         public int dayCounter;
         public Weather(int gameRound)
         {
+            forecastWeather = new Random();
             dayCounter = gameRound;
             forecast = new List<string>();
             weatherOfDay = new List<int>();
