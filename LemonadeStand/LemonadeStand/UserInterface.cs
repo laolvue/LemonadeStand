@@ -10,9 +10,14 @@ namespace LemonadeStand
     {
         Player player;
         Weather weather;
+        Inventory inventory;
+        Day day;
+        public int gameRound;
         public UserInterface()
         {
-            weather = new Weather();
+            gameRound = 0;
+            day = new Day();
+            inventory = new Inventory();
         }
 
 
@@ -39,11 +44,15 @@ namespace LemonadeStand
 
         public void DisplayWeather()
         {
+            weather = new Weather(gameRound);
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("Here's a look at your weather forecast for this week: ");
             weather.DetermineForecast();
-            Console.WriteLine($"{weather.forecast[0]}\t\t{weather.forecast[1]}\t\t{weather.forecast[2]}\t\t{weather.forecast[3]}\n{weather.forecast[4]}\t\t{weather.forecast[5]}\t\t{weather.forecast[6]}");
+            day.DefineDays();
+            string displayForecast = ($"{day.dayNames[0]}: {weather.forecast[0]}\t\t{day.dayNames[1]}: {weather.forecast[1]}\t\t{day.dayNames[2]}: {weather.forecast[2]}\t\t");
+            displayForecast += ($"{day.dayNames[3]}: {weather.forecast[3]}\n{day.dayNames[4]}: {weather.forecast[4]}\t\t{day.dayNames[5]}: {weather.forecast[5]}\t\t{day.dayNames[6]}: {weather.forecast[6]}");
+            Console.WriteLine(displayForecast);
             Console.WriteLine("**Remember that this is only a forecast. The weather CAN change**");
             Console.ResetColor();
             Console.ReadLine();
@@ -52,20 +61,22 @@ namespace LemonadeStand
         public void StartDay()
         {
             Console.Clear();
-            string dayWeather = weather.DetermineWeather();
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"The Game is Starting... Good Luck {player.playerName}!");
             Console.ResetColor();
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"\n\n{weather.accurateWeather[weather.dayCounter]}\nYour starting budget is: ${player.budget}");
+            weather.DetermineWeather();
+            Console.WriteLine($"\n\n{day.dayNames[weather.dayCounter]}'s actual weather: {weather.accurateWeather[weather.dayCounter]}\nYour starting budget is: ${player.budget}");
             Console.WriteLine("\nInventory costs:\n$3.00/pitcher of water\t$0.50/lemon\t$0.50/sugar\t$0.50/ice cube");
             Console.ResetColor();
         }
 
         public void BuyIngredients()
         {
-            Console.WriteLine("\nEnter how much inventory to buy for today. !Remember! You need to buy atleast one of each ingredient to be able to make lemonade. More customers will buy if your lemonade is good!");
-
+            Console.WriteLine("\nEnter how much inventory to buy for today. !Remember! You need to buy atleast ONE OF EACH ingredient to be able to make lemonade. More customers will buy if your lemonade is good!");
+            Console.ReadLine();
+            Console.Write("Number of pitchers to make: ");
+            Console.ReadLine();
         }
 
 
