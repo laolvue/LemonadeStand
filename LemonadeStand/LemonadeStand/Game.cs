@@ -22,6 +22,7 @@ namespace LemonadeStand
             userInterface.DisplayWeather();
             userInterface.StartDay();
             userInterface.BuyIngredients();
+            userInterface.DetermineCostOfLemonade();
 
 
         }

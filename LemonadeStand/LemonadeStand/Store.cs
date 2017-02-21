@@ -12,12 +12,18 @@ namespace LemonadeStand
         Player player;
         public string playerName;
         public double budget;
+        public int numberOfPitchers;
+        public int numberOfLemons;
+        public int numberOfSugar;
+        public int numberOfIce;
+        public double costOfLemonade;
         public Store()
         {
             inventory = new Inventory();
             player = new Player();
             budget = 10;
             playerName = player.PromptName();
+            costOfLemonade = 0.50;
         }
         
             
@@ -29,23 +35,36 @@ namespace LemonadeStand
 
         public double CalculateBudgetGivenPitchers(int pitchers)
         {
+            numberOfPitchers = pitchers;
             budget -= (pitchers * inventory.costOfPitcher);
             return (budget);
         }
         public double CalculateBudgetGivenLemons(int lemons)
         {
+            numberOfLemons = lemons;
             budget -= (lemons * inventory.costOfLemon);
             return (budget);
         }
         public double CalculateBudgetGivenSugar(int sugar)
         {
+            numberOfSugar = sugar;
             budget -= (sugar * inventory.costOfSugar);
             return (budget);
         }
         public double CalculateBudgetGivenIce(int ice)
         {
+            numberOfIce = ice;
             budget -= (ice * inventory.costOfIce);
             return (budget);
+        }
+
+        public void IncreaseCharge()
+        {
+            costOfLemonade += .10;
+        }
+        public void DecreaseCharge()
+        {
+            costOfLemonade -= 10;
         }
 
 

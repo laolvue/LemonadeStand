@@ -70,7 +70,7 @@ namespace LemonadeStand
 
         public void BuyIngredients()
         {
-            Console.WriteLine("\nBuy ingredients! You need to buy atleast ONE OF EACH ingredient in order make lemonade. \nRemember: Tasty lemonade = More sales!");
+            Console.WriteLine("\nBuy ingredients! You need to buy atleast ONE OF EACH ingredient in order make ONE PITCHER of lemonade. \nRemember: Tasty lemonade = More sales!");
             Console.Write("Number of pitchers to make: ");
             Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenPitchers(int.Parse(Console.ReadLine())).ToString("0.00")}");
             Console.Write("How many lemons per pitcher: ");
@@ -79,6 +79,25 @@ namespace LemonadeStand
             Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenSugar(int.Parse(Console.ReadLine())).ToString("0.00")}");
             Console.Write("How many ice cubes per pitcher: ");
             Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenIce(int.Parse(Console.ReadLine())).ToString("0.00")}");
+        }
+
+        public void DetermineCostOfLemonade()
+        {
+            int input = 0;
+            do
+            {
+                Console.WriteLine($"\n\n1: Increment 10 cents\t2:Decrement 10 cents\t\t0:Finish\t\tCurrent lemonade price: ${ store.costOfLemonade.ToString("0.00")}");
+                Console.Write("What would you like to do: ");
+                input = int.Parse(Console.ReadLine());
+                if (input == 1)
+                {
+                    store.IncreaseCharge();
+                }
+                else if (input == 2)
+                {
+                    store.DecreaseCharge();
+                }
+            } while (input != 0);
         }
 
 
