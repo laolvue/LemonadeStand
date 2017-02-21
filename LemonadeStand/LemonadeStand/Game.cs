@@ -20,10 +20,17 @@ namespace LemonadeStand
             userInterface.DisplayGreetings();
             userInterface.PromptName();
             userInterface.DisplayWeather();
-            userInterface.StartDay();
-            userInterface.BuyIngredients();
-            userInterface.DetermineCostOfLemonade();
-            userInterface.DisplayCustomers();
+            do
+            {
+                userInterface.StartDay();
+                userInterface.BuyIngredients();
+                userInterface.DetermineCostOfLemonade();
+                userInterface.DetermineBuyers();
+                userInterface.DisplayDayResults();
+                userInterface.StartNewRound();
+            } while (userInterface.gameRound < 8);
+ 
+            
 
 
         }

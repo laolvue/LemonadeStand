@@ -30,7 +30,7 @@ namespace LemonadeStand
             }
             else if (weather == "Rainy")
             {
-                totalCustomers = customerVisit.Next(5, 10);
+                totalCustomers = customerVisit.Next(3, 10);
             }
         }
 
@@ -107,7 +107,7 @@ namespace LemonadeStand
                     for (int i = 0; i < totalCustomers; i++)
                     {
                         int customerBuying = customerVisit.Next(1, 10);
-                        if (customerBuying > 0 && customerBuying <= 6)
+                        if (customerBuying > 0 && customerBuying <= 5)
                         {
                             customers.Add(1);
                         }
@@ -120,7 +120,7 @@ namespace LemonadeStand
                     for (int i = 0; i < totalCustomers; i++)
                     {
                         int customerBuying = customerVisit.Next(1, 10);
-                        if (customerBuying > 0 && customerBuying <= 5)
+                        if (customerBuying > 0 && customerBuying <= 4)
                         {
                             customers.Add(1);
                         }
@@ -133,7 +133,7 @@ namespace LemonadeStand
                     for (int i = 0; i < totalCustomers; i++)
                     {
                         int customerBuying = customerVisit.Next(1, 10);
-                        if (customerBuying > 0 && customerBuying <= 4)
+                        if (customerBuying > 0 && customerBuying <= 3)
                         {
                             customers.Add(1);
                         }
@@ -146,7 +146,7 @@ namespace LemonadeStand
                     for (int i = 0; i < totalCustomers; i++)
                     {
                         int customerBuying = customerVisit.Next(1, 10);
-                        if (customerBuying > 0 && customerBuying <= 3)
+                        if (customerBuying > 0 && customerBuying <= 2)
                         {
                             customers.Add(1);
                         }

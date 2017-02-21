@@ -100,13 +100,24 @@ namespace LemonadeStand
             } while (input != 0);
         }
 
-        public void DisplayCustomers()
+        public void DetermineBuyers()
         {
             store.DetermineNumberOfBuyers(weather.accurateWeather[weather.dayCounter]);
-            store.DisplayResults();
-
         }
 
+        public void DisplayDayResults()
+        {
+            store.DisplayResults();
+        }
+
+        public void StartNewRound()
+        {
+            gameRound++;
+            store.ResetNewDay();
+            Console.WriteLine($"\n\nGet ready for DAY {gameRound+1}! Your remaining budget is: ${store.startingBudget.ToString("0.00")}");
+            Console.ReadLine();
+            
+        }
 
     }
 }

@@ -71,7 +71,7 @@ namespace LemonadeStand
         }
         public void DecreaseCharge()
         {
-            costOfLemonade -= 10;
+            costOfLemonade -= .10;
         }
 
         public void DetermineNumberOfBuyers(string weather)
@@ -97,7 +97,14 @@ namespace LemonadeStand
         public void DetermineProfit()
         {
             profit = (budget + sales)-startingBudget;
+        }
+
+        public void ResetNewDay()
+        {
             startingBudget = (budget + sales);
+            budget = startingBudget;
+            purchases = 0;
+            sales = 0;
         }
         public void DisplayResults()
         {
@@ -108,8 +115,6 @@ namespace LemonadeStand
             Console.WriteLine($"Total sales: ${sales.ToString("0.00")}");
             DetermineProfit();
             Console.WriteLine($"Profit: ${profit.ToString("0.00")}");
-            Console.WriteLine($"\nBudget remaining: {startingBudget.ToString("0.00")}");
-            Console.ReadLine();
         }
     }
 }
