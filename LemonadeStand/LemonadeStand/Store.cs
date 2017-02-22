@@ -22,6 +22,10 @@ namespace LemonadeStand
         public double costOfLemonade;
         public int purchases;
         public double profit;
+        public int soldOut;
+        public double potentialSales;
+        public double tip;
+        public double tipCheck;
         public Store(double budgetRemaining)
         {
             inventory = new Inventory();
@@ -31,6 +35,7 @@ namespace LemonadeStand
             startingBudget = budgetRemaining;
             playerName = player.PromptName();
             costOfLemonade = 0.50;
+            tip = 3;
         }
         
             
@@ -77,11 +82,13 @@ namespace LemonadeStand
         public void DetermineNumberOfBuyers(string weather)
         {
             customer.DetermineNumberOfCustomers(weather);
-            customer.DetermineBuyers(weather, costOfLemonade);
+            customer.DetermineBuyers(weather, costOfLemonade,numberOfPitchers);
         }
 
         public void DetermineSales()
         {
+
+            int maxPurchases = (numberOfPitchers * 10);
             foreach (int buy in customer.customers)
             {
                 if (buy == 1)
@@ -92,6 +99,19 @@ namespace LemonadeStand
                 else
                     continue;
             }
+            if (purchases > maxPurchases)
+            {
+                potentialSales = sales;
+                sales = sales - (costOfLemonade * (purchases - maxPurchases));
+                purchases = maxPurchases;
+                soldOut = 1;
+            }
+            if (numberOfLemons==3&&numberOfIce==2&&numberOfSugar==3&&purchases>0)
+            {
+                sales += tip;
+                tipCheck = 2;
+            }
+                
         }
 
         public void DetermineProfit()
@@ -105,16 +125,33 @@ namespace LemonadeStand
             budget = startingBudget;
             purchases = 0;
             sales = 0;
+            soldOut = 0;
+            tipCheck = 0;
+            potentialSales = 0;
         }
         public void DisplayResults()
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"Total customer visits: {customer.totalCustomers}");
             DetermineSales();
+            if(soldOut == 1)
+            {
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine($"\nYou have sold out! Your potential sales: ${potentialSales.ToString("0.00")}");
+                
+            }
+            if(tipCheck == 2)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\n**You also received a tip of {tip} for your fantastic lemonade recipe!**");
+            }
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"Total number of purchases: {purchases}");
             Console.WriteLine($"Total sales: ${sales.ToString("0.00")}");
             DetermineProfit();
             Console.WriteLine($"Profit: ${profit.ToString("0.00")}");
+            Console.ResetColor();
         }
     }
 }

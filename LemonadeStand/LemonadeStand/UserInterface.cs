@@ -71,15 +71,26 @@ namespace LemonadeStand
 
         public void BuyIngredients()
         {
-            Console.WriteLine("\nBuy ingredients! You need to buy atleast ONE OF EACH ingredient in order make ONE PITCHER of lemonade. \nRemember: Tasty lemonade = More sales!");
-            Console.Write("Number of pitchers to make: ");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\nBuy ingredients! You need to buy atleast ONE OF EACH ingredient in order make ONE PITCHER of lemonade. \nRemember: 1 pitcher makes 10 cups of lemonade\nTip: Tasty lemonade = More sales!");
+            Console.ResetColor();
+            Console.Write("\nNumber of pitchers to make: ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenPitchers(int.Parse(Console.ReadLine())).ToString("0.00")}");
+            Console.ResetColor();
             Console.Write("How many lemons per pitcher: ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenLemons(int.Parse(Console.ReadLine())).ToString("0.00")}");
+            Console.ResetColor();
             Console.Write("How many sugar cubes per pitcher: ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenSugar(int.Parse(Console.ReadLine())).ToString("0.00")}");
+            Console.ResetColor();
             Console.Write("How many ice cubes per pitcher: ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenIce(int.Parse(Console.ReadLine())).ToString("0.00")}");
+            Console.ResetColor();
+
         }
 
         public void DetermineCostOfLemonade()
@@ -87,7 +98,9 @@ namespace LemonadeStand
             int input = 0;
             do
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"\n\n1: Increment 10 cents\t2:Decrement 10 cents\t\t0:Finish\t\tCurrent lemonade price: ${ store.costOfLemonade.ToString("0.00")}");
+                Console.ResetColor();
                 Console.Write("What would you like to do: ");
                 input = int.Parse(Console.ReadLine());
                 if (input == 1)
@@ -116,17 +129,23 @@ namespace LemonadeStand
             store.ResetNewDay();
             if (store.startingBudget <= 0)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"\n\nYOU LOSE! You have gone bankrupt with a balance of: -${(store.startingBudget*-1).ToString("0.00")}");
+                Console.ResetColor();
                 gameRound = 6;
             }
             else if (store.startingBudget > 0 && store.startingBudget<4.50)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"\n\nYOU LOSE! You do not have enough money to purchase ingredients for your business. Your balance: ${(store.startingBudget).ToString("0.00")}");
+                Console.ResetColor();
                 gameRound = 6;
             }
             else if(store.startingBudget > 0 && gameRound == 6)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"\n\nYou Win! Your ending balance for the week is: ${store.startingBudget.ToString("0.00")}");
+                Console.ResetColor();
             }
         }
         public void StartNewRound()
@@ -139,15 +158,19 @@ namespace LemonadeStand
             }
             else
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"\n\nGet ready for DAY {gameRound + 1}! Your remaining budget is: ${store.startingBudget.ToString("0.00")}");
                 Console.Write("Press Enter to continue...");
+                Console.ResetColor();
                 Console.ReadLine();
             }
         }
 
         public int StartNewGame()
         {
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("\nWould you like to play again?\t1: Yes\t2: No");
+            Console.ResetColor();
             int playAgain = int.Parse(Console.ReadLine());
             Console.Clear();
             return (playAgain);
