@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LemonadeStand
 {
-    public class Store
+    public class Store: ErrorCheck
     {
         Inventory inventory;
         Player player;
@@ -15,11 +15,6 @@ namespace LemonadeStand
         public double budget;
         public double startingBudget;
         public double sales;
-        public int numberOfPitchers;
-        public int numberOfLemons;
-        public int numberOfSugar;
-        public int numberOfIce;
-        public double costOfLemonade;
         public int purchases;
         public double profit;
         public int soldOut;
@@ -34,66 +29,91 @@ namespace LemonadeStand
             budget = budgetRemaining;
             startingBudget = budgetRemaining;
             playerName = player.PromptName();
-            costOfLemonade = 0.50;
             tip = 3;
         }
         
-            
+        public double DisplayCostOfLemonade()
+        {
+            return (inventory.costOfLemonade);
+        }    
         public void DisplayInventory()
         {
             Console.WriteLine($"\nInventory costs:\n${inventory.costOfPitcher.ToString("0.00")}/pitcher of water\t${inventory.costOfLemon.ToString("0.00")}/lemon\t${inventory.costOfSugar.ToString("0.00")}/sugar\t${inventory.costOfIce.ToString("0.00")}/4 ice cubes");
         }
 
-        public double CalculateBudgetGivenPitchers(int pitchers)
+        public double CalculateBudgetGivenPitchers(string question)
         {
-            numberOfPitchers = pitchers;
+            int pitchers = base.PromptInputNumber(question, base.TestNumber);
+            
+            inventory.numberOfPitchers = pitchers;
             budget -= (pitchers * inventory.costOfPitcher);
             return (budget);
         }
-        public double CalculateBudgetGivenLemons(int lemons)
+        public double CalculateBudgetGivenLemons(string question)
         {
-            numberOfLemons = lemons;
-            budget -= (numberOfPitchers* lemons * inventory.costOfLemon);
+            int lemons;
+
+            do
+            {
+                lemons = base.PromptInputNumber(question, base.TestNumber);
+                if (lemons == 0 && inventory.numberOfPitchers > 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("You need to buy atleast 1 lemon/pitcher!");
+                    Console.ResetColor();
+                }
+                else if(inventory.numberOfPitchers==0 && lemons > 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("You didn't buy a pitcher, so You don't need to buy any ingredients.");
+                    Console.ResetColor();
+                }
+            } while (lemons == 0 && inventory.numberOfPitchers >0);
+
+            inventory.numberOfLemons = lemons;
+            budget -= (inventory.numberOfPitchers * lemons * inventory.costOfLemon);
             return (budget);
         }
-        public double CalculateBudgetGivenSugar(int sugar)
+        public double CalculateBudgetGivenSugar(string question)
         {
-            numberOfSugar = sugar;
-            budget -= (numberOfPitchers * sugar * inventory.costOfSugar);
+            int sugar = base.PromptInputNumber(question, base.TestNumber);
+            inventory.numberOfSugar = sugar;
+            budget -= (inventory.numberOfPitchers * sugar * inventory.costOfSugar);
             return (budget);
         }
-        public double CalculateBudgetGivenIce(int ice)
+        public double CalculateBudgetGivenIce(string question)
         {
-            numberOfIce = ice;
-            budget -= (numberOfPitchers * ice * inventory.costOfIce);
+            int ice = base.PromptInputNumber(question, base.TestNumber);
+            inventory.numberOfIce = ice;
+            budget -= (inventory.numberOfPitchers * ice * inventory.costOfIce);
             return (budget);
         }
 
         public void IncreaseCharge()
         {
-            costOfLemonade += .10;
+            inventory.costOfLemonade += .10;
         }
         public void DecreaseCharge()
         {
-            costOfLemonade -= .10;
+            inventory.costOfLemonade -= .10;
         }
 
         public void DetermineNumberOfBuyers(string weather)
         {
             customer.DetermineNumberOfCustomers(weather);
-            customer.DetermineBuyers(weather, costOfLemonade,numberOfPitchers);
+            customer.DetermineBuyers(weather, inventory.costOfLemonade, inventory.numberOfPitchers);
         }
 
         public void DetermineSales()
         {
 
-            int maxPurchases = (numberOfPitchers * 10);
+            int maxPurchases = (inventory.numberOfPitchers * 10);
             foreach (int buy in customer.customers)
             {
                 if (buy == 1)
                 {
                     purchases++;
-                    sales += costOfLemonade;
+                    sales += inventory.costOfLemonade;
                 }
                 else
                     continue;
@@ -101,11 +121,11 @@ namespace LemonadeStand
             if (purchases > maxPurchases)
             {
                 potentialSales = sales;
-                sales = sales - (costOfLemonade * (purchases - maxPurchases));
+                sales = sales - (inventory.costOfLemonade * (purchases - maxPurchases));
                 purchases = maxPurchases;
                 soldOut = 1;
             }
-            if (numberOfLemons==3&&numberOfIce==2&&numberOfSugar==3&&purchases>0)
+            if (inventory.numberOfLemons ==3&& inventory.numberOfIce ==2&& inventory.numberOfSugar ==3&&purchases>0)
             {
                 sales += tip;
                 tipCheck = 2;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LemonadeStand
 {
-    public class UserInterface
+    public class UserInterface: ErrorCheck
     {
         Store store;
         Weather weather;
@@ -57,50 +57,54 @@ namespace LemonadeStand
             Console.ReadLine();
         }
 
+        public void DetermineActualDayWeather()
+        {
+            weather.DetermineWeather();
+        }
         public void StartDay()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"The Game is Starting... Good Luck {store.playerName}!");
             Console.ResetColor();
-            weather.DetermineWeather();
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"\n\n{day.dayNames[gameRound]}'s forecast: {weather.forecast[gameRound]}\n{day.dayNames[gameRound]}'s actual weather: {weather.accurateWeather[gameRound]}\nYour starting budget is: ${store.startingBudget.ToString("0.00")}");
             Console.ResetColor();
         }
 
-        public void BuyIngredients()
+        public void DisplayStoreInventory()
         {
             store.DisplayInventory();
+        }
+
+        public void BuyIngredients()
+        {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("\nBuy ingredients! You need to buy atleast ONE OF EACH ingredient in order make ONE PITCHER of lemonade. \nRemember: 1 pitcher makes 10 cups of lemonade\nTip: Tasty lemonade = More sales!");
             Console.ResetColor();
-            Console.Write("\nNumber of pitchers to make: ");
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenPitchers(int.Parse(Console.ReadLine())).ToString("0.00")}");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenPitchers("\nNumber of pitchers to make: ").ToString("0.00")}");
+            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenLemons("How many lemons per pitcher: ").ToString("0.00")}");
+            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenSugar("How many sugar cubes per pitcher: ").ToString("0.00")}");
+            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenIce("How many packs of ice per pitcher: ").ToString("0.00")}");
             Console.ResetColor();
-            Console.Write("How many lemons per pitcher: ");
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenLemons(int.Parse(Console.ReadLine())).ToString("0.00")}");
-            Console.ResetColor();
-            Console.Write("How many sugar cubes per pitcher: ");
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenSugar(int.Parse(Console.ReadLine())).ToString("0.00")}");
-            Console.ResetColor();
-            Console.Write("How many ice cubes per pitcher: ");
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenIce(int.Parse(Console.ReadLine())).ToString("0.00")}");
-            Console.ResetColor();
+        }
+
+        public void DetermineOverBuy()
+        {
             if (store.budget <= 0)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("You over spent! Please try again, and make sure you only buy as much ingredients as you can afford.");
+                Console.ResetColor();
                 Console.WriteLine("\nPress enter to continue...");
                 Console.ReadLine();
                 Console.Clear();
                 store.budget = store.startingBudget;
+                StartDay();
+                DisplayStoreInventory();
                 BuyIngredients();
             }
-
         }
 
         public void DetermineCostOfLemonade()
@@ -109,10 +113,9 @@ namespace LemonadeStand
             do
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"\n\n1: Increment 10 cents\t2:Decrement 10 cents\t\t0:Finish\t\tCurrent lemonade price: ${ store.costOfLemonade.ToString("0.00")}");
+                Console.WriteLine($"\n\n1: Increment 10 cents\t2:Decrement 10 cents\t\t0:Finish\t\tCurrent lemonade price: ${ store.DisplayCostOfLemonade().ToString("0.00")}");
                 Console.ResetColor();
-                Console.Write("What would you like to do: ");
-                input = int.Parse(Console.ReadLine());
+                input = base.PromptInputNumber("What would you like to do: ", base.TestNumber);
                 if (input == 1)
                 {
                     store.IncreaseCharge();
@@ -120,6 +123,12 @@ namespace LemonadeStand
                 else if (input == 2)
                 {
                     store.DecreaseCharge();
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Not a valid option!");
+                    Console.ResetColor();
                 }
             } while (input != 0);
         }
@@ -185,11 +194,18 @@ namespace LemonadeStand
         public int StartNewGame()
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("\nWould you like to play again?\t1: Yes\t2: No");
+            int playAgain = base.PromptInputNumber("\nWould you like to play again?\t1: Yes\t2: No\n", base.TestNumber);
             Console.ResetColor();
-            int playAgain = int.Parse(Console.ReadLine());
             Console.Clear();
-            return (playAgain);
+            if(playAgain != 1 && playAgain != 2)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Not a valid option!");
+                Console.ResetColor();
+                return StartNewGame();
+            }
+            else
+                return (playAgain);
         }
 
     }

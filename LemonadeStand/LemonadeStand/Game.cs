@@ -25,8 +25,11 @@ namespace LemonadeStand
                 userInterface.DisplayWeather();
                 while (userInterface.gameRound <= 6)
                 {
+                    userInterface.DetermineActualDayWeather();
                     userInterface.StartDay();
+                    userInterface.DisplayStoreInventory();
                     userInterface.BuyIngredients();
+                    userInterface.DetermineOverBuy();
                     userInterface.DetermineCostOfLemonade();
                     userInterface.DetermineBuyers();
                     userInterface.DisplayDayResults();
