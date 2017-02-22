@@ -85,13 +85,24 @@ namespace LemonadeStand
             Console.WriteLine("\nBuy ingredients! You need to buy atleast ONE OF EACH ingredient in order make ONE PITCHER of lemonade. \nRemember: 1 pitcher makes 10 cups of lemonade\nTip: Tasty lemonade = More sales!");
             Console.ResetColor();
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenPitchers("\nNumber of pitchers to make: ").ToString("0.00")}");
-            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenLemons("How many lemons per pitcher: ").ToString("0.00")}");
-            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenSugar("How many sugar cubes per pitcher: ").ToString("0.00")}");
-            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenIce("How many packs of ice per pitcher: ").ToString("0.00")}");
+            store.BuyPitcher("\nNumber of pitchers to make: ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenPitchers().ToString("0.00")}");
+            Console.ForegroundColor = ConsoleColor.White;
+            store.BuyLemon("Number of lemon to buy: ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenLemons().ToString("0.00")}");
+            Console.ForegroundColor = ConsoleColor.White;
+            store.BuySugar("Number of sugar cubes to buy: ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenSugar().ToString("0.00")}");
+            Console.ForegroundColor = ConsoleColor.White;
+            store.BuyIce("Number of ice packs to buy: ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenIce().ToString("0.00")}");
             Console.ResetColor();
         }
-
+        
         public void DetermineOverBuy()
         {
             if (store.budget <= 0)
@@ -209,6 +220,6 @@ namespace LemonadeStand
             else
                 return (playAgain);
         }
-
+        
     }
 }

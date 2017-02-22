@@ -12,6 +12,10 @@ namespace LemonadeStand
         Inventory inventory;
         Player player;
         Customer customer;
+
+
+
+
         public double budget;
         public double startingBudget;
         public double sales;
@@ -41,95 +45,122 @@ namespace LemonadeStand
         {
             return player.GetPlayerName;
         }
-        
-        public double DisplayCostOfLemonade()
-        {
-            return (inventory.costOfLemonade);
-        }    
+          
         public void DisplayInventory()
         {
             Console.WriteLine($"\nInventory costs:\n${inventory.costOfPitcher.ToString("0.00")}/pitcher of water\t${inventory.costOfLemon.ToString("0.00")}/lemon\t${inventory.costOfSugar.ToString("0.00")}/sugar\t${inventory.costOfIce.ToString("0.00")}/4 ice cubes");
         }
 
-        public double CalculateBudgetGivenPitchers(string question)
+        public void BuyPitcher(string question)
         {
+            inventory.pitcher.Clear();
             int pitchers = errorCheck.PromptInputNumber(question, errorCheck.TestNumber);
-            
-            inventory.numberOfPitchers = pitchers;
-            budget -= (pitchers * inventory.costOfPitcher);
+            for(int i=0; i<pitchers; i++)
+            {
+                inventory.AddPitcher();
+            }
+
+        }
+
+        public void BuyLemon(string question)
+        {
+            inventory.lemon.Clear();
+            int pitchers = errorCheck.PromptInputNumber(question, errorCheck.TestNumber);
+            for (int i = 0; i < pitchers; i++)
+            {
+                inventory.AddLemon();
+            }
+        }
+        public void BuySugar(string question)
+        {
+            inventory.sugar.Clear();
+            int pitchers = errorCheck.PromptInputNumber(question, errorCheck.TestNumber);
+            for (int i = 0; i < pitchers; i++)
+            {
+                inventory.AddSugar();
+            }
+        }
+        public void BuyIce(string question)
+        {
+            inventory.ice.Clear();
+            int pitchers = errorCheck.PromptInputNumber(question, errorCheck.TestNumber);
+            for (int i = 0; i < pitchers; i++)
+            {
+                inventory.AddIce();
+            }
+        }
+        
+        public double CalculateBudgetGivenPitchers()
+        {
+            budget -= (inventory.pitcher.Count * inventory.costOfPitcher);
             return (budget);
         }
-        public double CalculateBudgetGivenLemons(string question)
+        
+        public double CalculateBudgetGivenLemons()
         {
-            int lemons;
             do
             {
-                lemons = errorCheck.PromptInputNumber(question, errorCheck.TestNumber);
-                if (lemons == 0 && inventory.numberOfPitchers > 0)
+                if (inventory.lemon.Count == 0 && inventory.pitcher.Count > 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("You need to buy atleast 1 lemon/pitcher!");
                     Console.ResetColor();
                 }
-                else if(inventory.numberOfPitchers==0 && lemons > 0)
+                else if(inventory.pitcher.Count == 0 && inventory.lemon.Count > 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("You didn't buy a pitcher, so You don't need to buy any ingredients.");
                     Console.ResetColor();
                 }
-            } while (lemons == 0 && inventory.numberOfPitchers >0);
-
-            inventory.numberOfLemons = lemons;
-            budget -= (inventory.numberOfPitchers * lemons * inventory.costOfLemon);
+            } while (inventory.lemon.Count == 0 && inventory.pitcher.Count > 0);
+            
+            budget -= (inventory.pitcher.Count * inventory.lemon.Count * inventory.lemon[0].cost);
             return (budget);
         }
-        public double CalculateBudgetGivenSugar(string question)
+        
+        public double CalculateBudgetGivenSugar()
         {
-            int sugar;
             do
             {
-                sugar = errorCheck.PromptInputNumber(question, errorCheck.TestNumber);
-                if (sugar == 0 && inventory.numberOfPitchers > 0)
+                if (inventory.sugar.Count == 0 && inventory.pitcher.Count > 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("You need to buy atleast 1 sugar cube/pitcher!");
                     Console.ResetColor();
                 }
-                else if (inventory.numberOfPitchers == 0 && sugar > 0)
+                else if (inventory.pitcher.Count == 0 && inventory.sugar.Count > 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("You didn't buy a pitcher, so You don't need to buy any ingredients.");
                     Console.ResetColor();
                 }
-            } while (sugar == 0 && inventory.numberOfPitchers > 0);
-            inventory.numberOfSugar = sugar;
-            budget -= (inventory.numberOfPitchers * sugar * inventory.costOfSugar);
+            } while (inventory.sugar.Count == 0 && inventory.pitcher.Count > 0);
+
+            budget -= (inventory.pitcher.Count * inventory.sugar.Count * inventory.sugar[0].cost);
             return (budget);
         }
-        public double CalculateBudgetGivenIce(string question)
+        public double CalculateBudgetGivenIce()
         {
-            int ice;
             do
             {
-                ice = errorCheck.PromptInputNumber(question, errorCheck.TestNumber);
-                if (ice == 0 && inventory.numberOfPitchers > 0)
+                if (inventory.ice.Count == 0 && inventory.pitcher.Count > 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("You need to buy atleast 1 pack of ice/pitcher!");
+                    Console.WriteLine("You need to buy atleast 1 ice pack/pitcher!");
                     Console.ResetColor();
                 }
-                else if (inventory.numberOfPitchers == 0 && ice > 0)
+                else if (inventory.pitcher.Count == 0 && inventory.ice.Count > 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("You didn't buy a pitcher, so You don't need to buy any ingredients.");
                     Console.ResetColor();
                 }
-            } while (ice == 0 && inventory.numberOfPitchers > 0);
-            inventory.numberOfIce = ice;
-            budget -= (inventory.numberOfPitchers * ice * inventory.costOfIce);
+            } while (inventory.ice.Count == 0 && inventory.pitcher.Count > 0);
+
+            budget -= (inventory.pitcher.Count * inventory.ice.Count * inventory.ice[0].cost);
             return (budget);
         }
-
+        
         public void IncreaseCharge()
         {
             inventory.costOfLemonade += .10;
@@ -138,17 +169,22 @@ namespace LemonadeStand
         {
             inventory.costOfLemonade -= .10;
         }
+        public double DisplayCostOfLemonade()
+        {
+            return (inventory.costOfLemonade);
+        }
+
 
         public void DetermineNumberOfBuyers(string weather)
         {
             customer.DetermineNumberOfCustomers(weather);
-            customer.DetermineBuyers(weather, inventory.costOfLemonade, inventory.numberOfPitchers);
+            customer.DetermineBuyers(weather, inventory.costOfLemonade, inventory.pitcher.Count);
         }
 
         public void DetermineSales()
         {
 
-            int maxPurchases = (inventory.numberOfPitchers * 10);
+            int maxPurchases = (inventory.pitcher.Count * 10);
             foreach (int buy in customer.customers)
             {
                 if (buy == 1)
@@ -166,12 +202,12 @@ namespace LemonadeStand
                 purchases = maxPurchases;
                 soldOut = 1;
             }
-            if (inventory.numberOfLemons ==3&& inventory.numberOfIce ==2&& inventory.numberOfSugar ==3&&purchases>0)
+            if (inventory.lemon.Count ==3&& inventory.ice.Count ==2&& inventory.sugar.Count ==3&&purchases>0)
             {
                 sales += tip;
                 tipCheck = 2;
             }
-                
+
         }
 
         public void DetermineProfit()
@@ -199,7 +235,7 @@ namespace LemonadeStand
             {
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.WriteLine($"\nYou have sold out! Your potential sales: ${potentialSales.ToString("0.00")}");
-                
+
             }
             if(tipCheck == 2)
             {
@@ -214,4 +250,4 @@ namespace LemonadeStand
             Console.ResetColor();
         }
     }
-}
+    }

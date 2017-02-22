@@ -9,24 +9,48 @@ namespace LemonadeStand
 {
     public class Inventory
     {
+
+        public List<Pitcher> pitcher;
+        public List<Lemon> lemon;
+        public List<Sugar> sugar;
+        public List<Ice> ice;
         public double costOfPitcher;
+        public double costOfSugar;
         public double costOfLemon;
         public double costOfIce;
-        public double costOfSugar;
-        public int numberOfPitchers;
-        public int numberOfLemons;
-        public int numberOfSugar;
-        public int numberOfIce;
         public double costOfLemonade;
+
         public Inventory()
         {
+            lemon = new List<Lemon>();
+            sugar = new List<Sugar>();
+            ice = new List<Ice>();
+            pitcher = new List<Pitcher>();
             costOfPitcher = 3.00;
-            costOfLemon = 0.50;
-            costOfIce = 0.50;
-            costOfSugar = 0.50;
-            costOfLemonade = 0.50;
-
+            costOfSugar = .50;
+            costOfLemon =.50;
+            costOfIce = .50;
+            costOfLemonade = .50;
         }
+
+
+        public void AddPitcher()
+        {
+            pitcher.Add(new Pitcher());
+        }
+        public void AddLemon()
+        {
+            lemon.Add(new Lemon());
+        }
+        public void AddSugar()
+        {
+            sugar.Add(new Sugar());
+        }
+        public void AddIce()
+        {
+            ice.Add(new Ice());
+        }
+
 
 
     }

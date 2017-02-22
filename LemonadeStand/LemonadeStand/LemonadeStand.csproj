@@ -47,11 +47,15 @@
     <Compile Include="Day.cs" />
     <Compile Include="ErrorCheck.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Ice.cs" />
     <Compile Include="Inventory.cs" />
+    <Compile Include="Lemon.cs" />
+    <Compile Include="Pitcher.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Store.cs" />
+    <Compile Include="Sugar.cs" />
     <Compile Include="UserInterface.cs" />
     <Compile Include="Weather.cs" />
   </ItemGroup>
