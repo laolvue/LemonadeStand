@@ -6,21 +6,20 @@ using System.Threading.Tasks;
 
 namespace LemonadeStand
 {
-    public class Player: ErrorCheck
+    public class Player
     {
+        ErrorCheck errorCheck;
         public string playerName;
         public Player()
         {
-
+            errorCheck = new ErrorCheck();
         }
 
         public string PromptName()
         {
             string question = ("\nPlease enter your name: ");
-            string userInput = base.PromptInputLetters(question, base.TestLetters);
+            string userInput = errorCheck.PromptInputLetters(question, errorCheck.TestLetters);
             return (userInput);
         }
-
-
     }
 }

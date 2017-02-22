@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace LemonadeStand
 {
-    public class Store: ErrorCheck
+    public class Store
     {
+        ErrorCheck errorCheck;
         Inventory inventory;
         Player player;
         Customer customer;
@@ -23,6 +24,7 @@ namespace LemonadeStand
         public double tipCheck;
         public Store(double budgetRemaining)
         {
+            errorCheck = new ErrorCheck();
             inventory = new Inventory();
             player = new Player();
             customer = new Customer();
@@ -43,7 +45,7 @@ namespace LemonadeStand
 
         public double CalculateBudgetGivenPitchers(string question)
         {
-            int pitchers = base.PromptInputNumber(question, base.TestNumber);
+            int pitchers = errorCheck.PromptInputNumber(question, errorCheck.TestNumber);
             
             inventory.numberOfPitchers = pitchers;
             budget -= (pitchers * inventory.costOfPitcher);
@@ -52,10 +54,9 @@ namespace LemonadeStand
         public double CalculateBudgetGivenLemons(string question)
         {
             int lemons;
-
             do
             {
-                lemons = base.PromptInputNumber(question, base.TestNumber);
+                lemons = errorCheck.PromptInputNumber(question, errorCheck.TestNumber);
                 if (lemons == 0 && inventory.numberOfPitchers > 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -76,14 +77,46 @@ namespace LemonadeStand
         }
         public double CalculateBudgetGivenSugar(string question)
         {
-            int sugar = base.PromptInputNumber(question, base.TestNumber);
+            int sugar;
+            do
+            {
+                sugar = errorCheck.PromptInputNumber(question, errorCheck.TestNumber);
+                if (sugar == 0 && inventory.numberOfPitchers > 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("You need to buy atleast 1 sugar cube/pitcher!");
+                    Console.ResetColor();
+                }
+                else if (inventory.numberOfPitchers == 0 && sugar > 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("You didn't buy a pitcher, so You don't need to buy any ingredients.");
+                    Console.ResetColor();
+                }
+            } while (sugar == 0 && inventory.numberOfPitchers > 0);
             inventory.numberOfSugar = sugar;
             budget -= (inventory.numberOfPitchers * sugar * inventory.costOfSugar);
             return (budget);
         }
         public double CalculateBudgetGivenIce(string question)
         {
-            int ice = base.PromptInputNumber(question, base.TestNumber);
+            int ice;
+            do
+            {
+                ice = errorCheck.PromptInputNumber(question, errorCheck.TestNumber);
+                if (ice == 0 && inventory.numberOfPitchers > 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("You need to buy atleast 1 pack of ice/pitcher!");
+                    Console.ResetColor();
+                }
+                else if (inventory.numberOfPitchers == 0 && ice > 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("You didn't buy a pitcher, so You don't need to buy any ingredients.");
+                    Console.ResetColor();
+                }
+            } while (ice == 0 && inventory.numberOfPitchers > 0);
             inventory.numberOfIce = ice;
             budget -= (inventory.numberOfPitchers * ice * inventory.costOfIce);
             return (budget);

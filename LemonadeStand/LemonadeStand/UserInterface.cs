@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace LemonadeStand
 {
-    public class UserInterface: ErrorCheck
+    public class UserInterface
     {
+        ErrorCheck errorCheck;
         Store store;
         Weather weather;
         Day day;
         public int gameRound;
         public UserInterface()
         {
-            
+            errorCheck = new ErrorCheck();
             day = new Day();
             
         }
@@ -115,7 +116,7 @@ namespace LemonadeStand
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"\n\n1: Increment 10 cents\t2:Decrement 10 cents\t\t0:Finish\t\tCurrent lemonade price: ${ store.DisplayCostOfLemonade().ToString("0.00")}");
                 Console.ResetColor();
-                input = base.PromptInputNumber("What would you like to do: ", base.TestNumber);
+                input = errorCheck.PromptInputNumber("What would you like to do: ", errorCheck.TestNumber);
                 if (input == 1)
                 {
                     store.IncreaseCharge();
@@ -194,7 +195,7 @@ namespace LemonadeStand
         public int StartNewGame()
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            int playAgain = base.PromptInputNumber("\nWould you like to play again?\t1: Yes\t2: No\n", base.TestNumber);
+            int playAgain = errorCheck.PromptInputNumber("\nWould you like to play again?\t1: Yes\t2: No\n", errorCheck.TestNumber);
             Console.ResetColor();
             Console.Clear();
             if(playAgain != 1 && playAgain != 2)
