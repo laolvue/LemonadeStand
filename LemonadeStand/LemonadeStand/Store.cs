@@ -42,7 +42,6 @@ namespace LemonadeStand
         public void DisplayInventory()
         {
             Console.WriteLine($"\nInventory costs:\n${inventory.costOfPitcher.ToString("0.00")}/pitcher of water\t${inventory.costOfLemon.ToString("0.00")}/lemon\t${inventory.costOfSugar.ToString("0.00")}/sugar\t${inventory.costOfIce.ToString("0.00")}/4 ice cubes");
-
         }
 
         public double CalculateBudgetGivenPitchers(int pitchers)
@@ -54,19 +53,19 @@ namespace LemonadeStand
         public double CalculateBudgetGivenLemons(int lemons)
         {
             numberOfLemons = lemons;
-            budget -= (lemons * inventory.costOfLemon);
+            budget -= (numberOfPitchers* lemons * inventory.costOfLemon);
             return (budget);
         }
         public double CalculateBudgetGivenSugar(int sugar)
         {
             numberOfSugar = sugar;
-            budget -= (sugar * inventory.costOfSugar);
+            budget -= (numberOfPitchers * sugar * inventory.costOfSugar);
             return (budget);
         }
         public double CalculateBudgetGivenIce(int ice)
         {
             numberOfIce = ice;
-            budget -= (ice * inventory.costOfIce);
+            budget -= (numberOfPitchers * ice * inventory.costOfIce);
             return (budget);
         }
 

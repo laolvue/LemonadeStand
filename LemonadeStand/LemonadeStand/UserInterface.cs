@@ -53,6 +53,7 @@ namespace LemonadeStand
             Console.WriteLine(displayForecast);
             Console.WriteLine("**Remember that this is only a forecast. The weather CAN change**");
             Console.ResetColor();
+            Console.WriteLine("\nPress enter to continue...");
             Console.ReadLine();
         }
 
@@ -65,12 +66,12 @@ namespace LemonadeStand
             weather.DetermineWeather();
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"\n\n{day.dayNames[gameRound]}'s forecast: {weather.forecast[gameRound]}\n{day.dayNames[gameRound]}'s actual weather: {weather.accurateWeather[gameRound]}\nYour starting budget is: ${store.startingBudget.ToString("0.00")}");
-            store.DisplayInventory();
             Console.ResetColor();
         }
 
         public void BuyIngredients()
         {
+            store.DisplayInventory();
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("\nBuy ingredients! You need to buy atleast ONE OF EACH ingredient in order make ONE PITCHER of lemonade. \nRemember: 1 pitcher makes 10 cups of lemonade\nTip: Tasty lemonade = More sales!");
             Console.ResetColor();
@@ -90,6 +91,15 @@ namespace LemonadeStand
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenIce(int.Parse(Console.ReadLine())).ToString("0.00")}");
             Console.ResetColor();
+            if (store.budget <= 0)
+            {
+                Console.WriteLine("You over spent! Please try again, and make sure you only buy as much ingredients as you can afford.");
+                Console.WriteLine("\nPress enter to continue...");
+                Console.ReadLine();
+                Console.Clear();
+                store.budget = store.startingBudget;
+                BuyIngredients();
+            }
 
         }
 
@@ -141,10 +151,16 @@ namespace LemonadeStand
                 Console.ResetColor();
                 gameRound = 6;
             }
-            else if(store.startingBudget > 0 && gameRound == 6)
+            else if(store.startingBudget <= 10 && store.startingBudget >=4.50 && gameRound == 6)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"\n\nYou Win! Your ending balance for the week is: ${store.startingBudget.ToString("0.00")}");
+                Console.WriteLine($"\n\nYoOU LOSE! You were unable to make any profits. Your ending balance for the week is: ${store.startingBudget.ToString("0.00")}");
+                Console.ResetColor();
+            }
+            else if (store.startingBudget > 10 && gameRound == 6)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\n\nYOU WIN! Your ending balance for the week is: ${store.startingBudget.ToString("0.00")}");
                 Console.ResetColor();
             }
         }
@@ -160,7 +176,7 @@ namespace LemonadeStand
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"\n\nGet ready for DAY {gameRound + 1}! Your remaining budget is: ${store.startingBudget.ToString("0.00")}");
-                Console.Write("Press Enter to continue...");
+                Console.Write("\nPress Enter to continue...");
                 Console.ResetColor();
                 Console.ReadLine();
             }
