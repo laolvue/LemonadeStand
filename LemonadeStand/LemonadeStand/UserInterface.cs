@@ -37,7 +37,8 @@ namespace LemonadeStand
         public void PromptName()
         {
             store = new Store(10);
-            Console.WriteLine(store.playerName);
+            store.PromptUserName();
+            Console.WriteLine(store.GetName());
         }
 
         public void DisplayWeather()
@@ -66,7 +67,7 @@ namespace LemonadeStand
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"The Game is Starting... Good Luck {store.playerName}!");
+            Console.WriteLine($"The Game is Starting... Good Luck {store.GetName()}!");
             Console.ResetColor();
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"\n\n{day.dayNames[gameRound]}'s forecast: {weather.forecast[gameRound]}\n{day.dayNames[gameRound]}'s actual weather: {weather.accurateWeather[gameRound]}\nYour starting budget is: ${store.startingBudget.ToString("0.00")}");

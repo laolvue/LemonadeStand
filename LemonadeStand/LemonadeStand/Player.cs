@@ -9,17 +9,24 @@ namespace LemonadeStand
     public class Player
     {
         ErrorCheck errorCheck;
-        public string playerName;
+        private string playerName;
         public Player()
         {
             errorCheck = new ErrorCheck();
         }
 
-        public string PromptName()
+        public void PromptName()
         {
-            string question = ("\nPlease enter your name: ");
-            string userInput = errorCheck.PromptInputLetters(question, errorCheck.TestLetters);
-            return (userInput);
+            playerName = errorCheck.PromptInputLetters("\nPlease enter your name: ", errorCheck.TestLetters);
         }
+
+        public string GetPlayerName
+        {
+            get
+            {
+                return playerName;
+            }
+        }
+
     }
 }

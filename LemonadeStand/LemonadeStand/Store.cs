@@ -12,7 +12,6 @@ namespace LemonadeStand
         Inventory inventory;
         Player player;
         Customer customer;
-        public string playerName;
         public double budget;
         public double startingBudget;
         public double sales;
@@ -30,8 +29,17 @@ namespace LemonadeStand
             customer = new Customer();
             budget = budgetRemaining;
             startingBudget = budgetRemaining;
-            playerName = player.PromptName();
             tip = 3;
+        }
+
+        public void PromptUserName()
+        {
+            player.PromptName();
+        }
+
+        public string GetName()
+        {
+            return player.GetPlayerName;
         }
         
         public double DisplayCostOfLemonade()
