@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LemonadeStand
 {
-    public class Player
+    public class Player: ErrorCheck
     {
         public string playerName;
         public Player()
@@ -16,9 +16,9 @@ namespace LemonadeStand
 
         public string PromptName()
         {
-            Console.Write("\nPlease enter your name: ");
-            playerName = Console.ReadLine();
-            return (playerName);
+            string question = ("\nPlease enter your name: ");
+            string userInput = base.PromptInputLetters(question, base.TestLetters);
+            return (userInput);
         }
 
 
