@@ -107,7 +107,7 @@ namespace LemonadeStand
         //calculates if player overspent on ingredients
         public bool DetermineOverBuy(Store store)
         {
-            if (store.budget <= 0)
+            if (store.budget < 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("You over spent! Please try again, and make sure you only buy as much ingredients as you can afford.");

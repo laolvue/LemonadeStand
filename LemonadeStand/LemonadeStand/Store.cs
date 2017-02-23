@@ -18,7 +18,8 @@ namespace LemonadeStand
         public double startingBudget;
         public double sales;
         public int purchases;
-        public double profit;
+        public double dailyProfit;
+        public double totalProfit;
         public int soldOut;
         public double potentialSales;
         public double tip;
@@ -205,9 +206,15 @@ namespace LemonadeStand
         }
 
         //calculate profit after expenses
-        public void DetermineProfit()
+        public void DetermineDayProfit()
         {
-            profit = (budget + sales)-startingBudget;
+            dailyProfit = (budget + sales)-startingBudget;
+        }
+
+        //calculate total profit
+        public void DetermineTotalProfit()
+        {
+            totalProfit = (budget + sales) - 10;
         }
 
         //reset variables for new day
@@ -238,13 +245,15 @@ namespace LemonadeStand
             if(tipCheck == 2)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"\n**You also received a tip of {tip} for your fantastic lemonade recipe!**");
+                Console.WriteLine($"\n**You also received a tip of ${tip} for your fantastic lemonade recipe!**");
             }
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"Total number of purchases: {purchases}");
             Console.WriteLine($"Total sales: ${sales.ToString("0.00")}");
-            DetermineProfit();
-            Console.WriteLine($"Profit: ${profit.ToString("0.00")}");
+            DetermineDayProfit();
+            DetermineTotalProfit();
+            Console.WriteLine($"Today's profit: ${dailyProfit.ToString("0.00")}");
+            Console.WriteLine($"Total profit so far this week: ${totalProfit.ToString("0.00")}");
             Console.ResetColor();
         }
 
