@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace LemonadeStand
 {
     public class UserInterface
     {
-        ErrorCheck errorCheck;
-        Store store;
         public int gameRound;
+        Regex letters;
+        Regex numbers;
         public UserInterface()
         {
-            errorCheck = new ErrorCheck();
-            
+            letters = new Regex(@"^[a-zA-Z0-9 ]*$");
+            numbers = new Regex(@"^[0-9]*$");
         }
 
 
@@ -32,9 +33,8 @@ namespace LemonadeStand
             Console.ResetColor();
         }
 
-        public void PromptName()
+        public void PromptName(Store store)
         {
-            store = new Store(10);
             store.PromptUserName();
             Console.WriteLine(store.GetName());
         }
@@ -59,7 +59,7 @@ namespace LemonadeStand
         {
             day.weather.DetermineWeather();
         }
-        public void StartDay(Day day)
+        public void StartDay(Day day, Store store)
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -70,12 +70,12 @@ namespace LemonadeStand
             Console.ResetColor();
         }
 
-        public void DisplayStoreInventory()
+        public void DisplayStoreInventory(Store store)
         {
             store.DisplayInventory();
         }
 
-        public void BuyIngredients()
+        public void BuyIngredients(Store store)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("\nBuy ingredients! You need to buy atleast ONE OF EACH ingredient in order make ONE PITCHER of lemonade. \nRemember: 1 pitcher makes 10 cups of lemonade\nTip: Pefect your recipe, and you can earn tips from customers!");
@@ -96,7 +96,7 @@ namespace LemonadeStand
             Console.ResetColor();
         }
         
-        public bool DetermineOverBuy(Day day)
+        public bool DetermineOverBuy(Day day, Store store)
         {
             if (store.budget <= 0)
             {
@@ -107,15 +107,15 @@ namespace LemonadeStand
                 Console.ReadLine();
                 Console.Clear();
                 store.budget = store.startingBudget;
-                StartDay(day);
-                DisplayStoreInventory();
+                StartDay(day,store);
+                DisplayStoreInventory(store);
                 return (false);
             }
             else
                 return true;
         }
 
-        public void DetermineCostOfLemonade()
+        public void DetermineCostOfLemonade(Store store)
         {
             int input = 0;
             do
@@ -123,7 +123,7 @@ namespace LemonadeStand
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"\n\n1: Increment 10 cents\t2:Decrement 10 cents\t\t0:Finish\t\tCurrent lemonade price: ${ store.DisplayCostOfLemonade().ToString("0.00")}");
                 Console.ResetColor();
-                input = errorCheck.PromptInputNumber("What would you like to do: ", errorCheck.TestNumber);
+                input = PromptInputNumber("What would you like to do: ", TestNumber);
                 if (input == 1)
                 {
                     store.IncreaseCharge();
@@ -141,17 +141,17 @@ namespace LemonadeStand
             } while (input != 0);
         }
 
-        public void DetermineBuyers(Day day)
+        public void DetermineBuyers(Day day, Store store)
         {
             store.DetermineNumberOfBuyers(day.weather.accurateWeather[day.weather.dayCounter]);
         }
 
-        public void DisplayDayResults()
+        public void DisplayDayResults(Store store)
         {
             store.DisplayResults();
         }
 
-        public void DetermineLose()
+        public void DetermineLose(Store store)
         {
             store.ResetNewDay();
             if (store.startingBudget <= 0)
@@ -181,7 +181,7 @@ namespace LemonadeStand
                 Console.ResetColor();
             }
         }
-        public void StartNewRound(Day day)
+        public void StartNewRound(Day day,Store store)
         {
             gameRound++;
             day.weather.dayCounter = gameRound;
@@ -202,7 +202,7 @@ namespace LemonadeStand
         public int StartNewGame()
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            int playAgain = errorCheck.PromptInputNumber("\nWould you like to play again?\t1: Yes\t2: No\n", errorCheck.TestNumber);
+            int playAgain = PromptInputNumber("\nWould you like to play again?\t1: Yes\t2: No\n", TestNumber);
             Console.ResetColor();
             Console.Clear();
             if(playAgain != 1 && playAgain != 2)
@@ -215,6 +215,37 @@ namespace LemonadeStand
             else
                 return (playAgain);
         }
-        
+
+        //method to validate user input is a number
+        public bool TestNumber(string input)
+        {
+            bool testedInput = numbers.IsMatch(input);
+            if (testedInput && input != "")
+            {
+                return (true);
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Invalid entry! Please enter numberes only. Try again.\n");
+                Console.ResetColor();
+                return (false);
+            }
+
+        }
+
+        //method to validate user input is a number, and returns the input if it's true
+        public int PromptInputNumber(string question, Func<string, bool> testNumber)
+        {
+            string userInput;
+            do
+            {
+                Console.Write(question);
+                userInput = Console.ReadLine();
+            } while (!testNumber(userInput));
+            int inputNumber = int.Parse(userInput);
+            return inputNumber;
+        }
+
     }
 }

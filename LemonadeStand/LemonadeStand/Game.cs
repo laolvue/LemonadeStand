@@ -10,6 +10,7 @@ namespace LemonadeStand
     {
         UserInterface userInterface= new UserInterface();
         Day day;
+        Store store;
 
         public Game()
         {
@@ -18,41 +19,35 @@ namespace LemonadeStand
 
         public void StartGame()
         {
+            double startingBudget = 10;
             int restart = 1;
             while(restart == 1)
             {
                 userInterface.DisplayGreetings();
-                userInterface.PromptName();
+                store = new Store(startingBudget);
+                userInterface.PromptName(store);
                 day = new Day();
                 userInterface.DisplayWeather(day);
                 while (userInterface.gameRound <= 6)
                 {
                     userInterface.DetermineActualDayWeather(day);
-                    userInterface.StartDay(day);
-                    userInterface.DisplayStoreInventory();
-                    bool test;
+                    userInterface.StartDay(day, store);
+                    userInterface.DisplayStoreInventory(store);
+                    bool overSpent;
                     do
                     {
-                        userInterface.BuyIngredients();
-                        test = userInterface.DetermineOverBuy(day);
-                    } while (!test);
+                        userInterface.BuyIngredients(store);
+                        overSpent = userInterface.DetermineOverBuy(day,store);
+                    } while (!overSpent);
                     
-                    userInterface.DetermineCostOfLemonade();
-                    userInterface.DetermineBuyers(day);
-                    userInterface.DisplayDayResults();
-                    userInterface.DetermineLose();
-                    userInterface.StartNewRound(day);
+                    userInterface.DetermineCostOfLemonade(store);
+                    userInterface.DetermineBuyers(day,store);
+                    userInterface.DisplayDayResults(store);
+                    userInterface.DetermineLose(store);
+                    userInterface.StartNewRound(day,store);
                 }
                 restart = userInterface.StartNewGame();
             }
-
-            
-
-
-
         }
-         
-        
-
     }
 }

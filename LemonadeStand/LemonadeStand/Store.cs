@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+
 
 namespace LemonadeStand
 {
     public class Store
     {
-        ErrorCheck errorCheck;
         Inventory inventory;
         Player player;
         Customer customer;
@@ -21,15 +22,17 @@ namespace LemonadeStand
         public double potentialSales;
         public double tip;
         public double tipCheck;
+        Regex letters;
+        Regex numbers;
         public Store(double budgetRemaining)
         {
-            errorCheck = new ErrorCheck();
             inventory = new Inventory();
             player = new Player();
             customer = new Customer();
             budget = budgetRemaining;
             startingBudget = budgetRemaining;
             tip = 3;
+            numbers = new Regex(@"^[0-9]*$");
         }
 
         public void PromptUserName()
@@ -50,7 +53,7 @@ namespace LemonadeStand
         public void BuyPitcher(string question)
         {
             inventory.pitcher.Clear();
-            int pitchers = errorCheck.PromptInputNumber(question, errorCheck.TestNumber);
+            int pitchers = PromptInputNumber(question, TestNumber);
             for(int i=0; i<pitchers; i++)
             {
                 inventory.AddPitcher();
@@ -61,7 +64,7 @@ namespace LemonadeStand
         public void BuyLemon(string question)
         {
             inventory.lemon.Clear();
-            int lemon = errorCheck.PromptInputNumber(question, errorCheck.TestNumber);
+            int lemon = PromptInputNumber(question, TestNumber);
 
             for (int i = 0; i < lemon; i++)
             {
@@ -71,7 +74,7 @@ namespace LemonadeStand
         public void BuySugar(string question)
         {
             inventory.sugar.Clear();
-            int sugar = errorCheck.PromptInputNumber(question, errorCheck.TestNumber);
+            int sugar = PromptInputNumber(question, TestNumber);
 
             for (int i = 0; i < sugar; i++)
             {
@@ -81,7 +84,7 @@ namespace LemonadeStand
         public void BuyIce(string question)
         {
             inventory.ice.Clear();
-            int ice = errorCheck.PromptInputNumber(question, errorCheck.TestNumber);
+            int ice = PromptInputNumber(question, TestNumber);
             for (int i = 0; i < ice; i++)
             {
                 inventory.AddIce();
@@ -253,6 +256,38 @@ namespace LemonadeStand
             DetermineProfit();
             Console.WriteLine($"Profit: ${profit.ToString("0.00")}");
             Console.ResetColor();
+        }
+
+
+        //method to validate user input is a number
+        public bool TestNumber(string input)
+        {
+            bool testedInput = numbers.IsMatch(input);
+            if (testedInput && input != "")
+            {
+                return (true);
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Invalid entry! Please enter numberes only. Try again.\n");
+                Console.ResetColor();
+                return (false);
+            }
+
+        }
+
+        //method to validate user input is a number, and returns the input if it's true
+        public int PromptInputNumber(string question, Func<string, bool> testNumber)
+        {
+            string userInput;
+            do
+            {
+                Console.Write(question);
+                userInput = Console.ReadLine();
+            } while (!testNumber(userInput));
+            int inputNumber = int.Parse(userInput);
+            return inputNumber;
         }
     }
 }
