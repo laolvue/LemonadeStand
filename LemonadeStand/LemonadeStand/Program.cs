@@ -10,7 +10,10 @@ namespace LemonadeStand
     {
         static void Main(string[] args)
         {
+            //instantiate game class
             Game game = new Game();
+
+            //call method to start the game
             game.StartGame();
            
         }

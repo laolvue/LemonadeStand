@@ -9,16 +9,18 @@ namespace LemonadeStand
 {
     public class UserInterface
     {
+        //member variables
         public int gameRound;
-        Regex letters;
         Regex numbers;
+
+        //constructor
         public UserInterface()
         {
-            letters = new Regex(@"^[a-zA-Z0-9 ]*$");
             numbers = new Regex(@"^[0-9]*$");
         }
 
 
+        //display greetings
         public void DisplayGreetings()
         {
             gameRound = 0;
@@ -33,12 +35,14 @@ namespace LemonadeStand
             Console.ResetColor();
         }
 
+        //prompt user name
         public void PromptName(Store store)
         {
             store.PromptUserName();
             Console.WriteLine(store.GetName());
         }
 
+        //display weather forecast for the week
         public void DisplayWeather(Day day)
         {
             Console.Clear();
@@ -54,11 +58,14 @@ namespace LemonadeStand
             Console.WriteLine("\nPress enter to continue...");
             Console.ReadLine();
         }
-        
+
+        //calculates the weather for the specific day
         public void DetermineActualDayWeather(Day day)
         {
             day.weather.DetermineWeather();
         }
+
+        //displays forecast, actual weather, and starting budget
         public void StartDay(Day day, Store store)
         {
             Console.Clear();
@@ -70,33 +77,35 @@ namespace LemonadeStand
             Console.ResetColor();
         }
 
+        //displays inventory and costs
         public void DisplayStoreInventory(Store store)
         {
             store.DisplayInventory();
         }
 
+        //prompts user to purchase ingredients
         public void BuyIngredients(Store store)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("\nBuy ingredients! You need to buy atleast ONE OF EACH ingredient in order make ONE PITCHER of lemonade. \nRemember: 1 pitcher makes 10 cups of lemonade\nTip: Pefect your recipe, and you can earn tips from customers!");
             Console.ResetColor();
-            Console.ForegroundColor = ConsoleColor.White;
-            string promptUserToBuy = ("\nNumber of pitchers to make: ");
-            store.BuyPitcher(promptUserToBuy);
+            string question = ("\nNumber of pitchers to make: ");
+            store.BuyPitcher(question);
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenPitchers().ToString("0.00")}");
             Console.ResetColor();
-            promptUserToBuy = ("Number of lemon to buy: ");
-            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenLemons(store.BuyLemon,promptUserToBuy).ToString("0.00")}");
+            question = ("Number of lemon to buy: ");
+            Console.WriteLine($"Budget remaining: ${store.CalculateBudget(store.BuyLemon,question,1).ToString("0.00")}");
             Console.ResetColor();
-            promptUserToBuy = ("Number of sugar cubes to buy: ");
-            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenSugar(store.BuySugar,promptUserToBuy).ToString("0.00")}");
-            promptUserToBuy = ("Number of ice packs to buy: ");
-            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenIce(store.BuyIce,promptUserToBuy).ToString("0.00")}");
+            question = ("Number of sugar cubes to buy: ");
+            Console.WriteLine($"Budget remaining: ${store.CalculateBudget(store.BuySugar, question, 2).ToString("0.00")}");
+            question = ("Number of ice packs to buy: ");
+            Console.WriteLine($"Budget remaining: ${store.CalculateBudget(store.BuyIce, question, 3).ToString("0.00")}");
             Console.ResetColor();
         }
         
-        public bool DetermineOverBuy(Day day, Store store)
+        //calculates if player overspent on ingredients
+        public bool DetermineOverBuy(Store store)
         {
             if (store.budget <= 0)
             {
@@ -106,15 +115,13 @@ namespace LemonadeStand
                 Console.WriteLine("\nPress enter to continue...");
                 Console.ReadLine();
                 Console.Clear();
-                store.budget = store.startingBudget;
-                StartDay(day,store);
-                DisplayStoreInventory(store);
                 return (false);
             }
             else
                 return true;
         }
 
+        //prompt user to increase/decrease the cost of one cup of lemonade
         public void DetermineCostOfLemonade(Store store)
         {
             int input = 0;
@@ -141,19 +148,27 @@ namespace LemonadeStand
             } while (input != 0);
         }
 
+        //calculates how many customers based on weather
+        public void DetermineCustomerVisits(Day day, Store store)
+        {
+            store.DetermineCustomers(day.weather.accurateWeather[day.weather.dayCounter]);
+        }
+
+        //calculates how many customers purchased a cup of lemonade based on weather, cost of lemonade, and recipe
         public void DetermineBuyers(Day day, Store store)
         {
             store.DetermineNumberOfBuyers(day.weather.accurateWeather[day.weather.dayCounter]);
         }
 
+        //displays results of lemonade business for the day
         public void DisplayDayResults(Store store)
         {
             store.DisplayResults();
         }
 
+        //determine if player lost/win
         public void DetermineLose(Store store)
         {
-            store.ResetNewDay();
             if (store.startingBudget <= 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -181,6 +196,8 @@ namespace LemonadeStand
                 Console.ResetColor();
             }
         }
+
+        //starts new day
         public void StartNewRound(Day day,Store store)
         {
             gameRound++;
@@ -199,6 +216,7 @@ namespace LemonadeStand
             }
         }
 
+        //restarts new game
         public int StartNewGame()
         {
             Console.ForegroundColor = ConsoleColor.Yellow;

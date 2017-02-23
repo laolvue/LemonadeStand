@@ -10,18 +10,21 @@ namespace LemonadeStand
 {
     public class Player
     {
+        //member variables
         private string playerName;
         Regex letters;
+
+        //constructor
         public Player()
         {
             letters = new Regex(@"^[a-zA-Z0-9 ]*$");
         }
-
+        
         public void PromptName()
         {
             playerName = PromptInputLetters("\nPlease enter your name: ", TestLetters);
         }
-
+        
         public string GetPlayerName
         {
             get

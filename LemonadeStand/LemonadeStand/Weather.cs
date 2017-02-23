@@ -8,11 +8,14 @@ namespace LemonadeStand
 {
     public class Weather
     {
+        //member variables
         public Random forecastWeather;
         public List<string> forecast;
         public List<string> accurateWeather;
         public List<int> weatherOfDay;
         public int dayCounter;
+
+        //constructor
         public Weather(int restartGameCounter)
         {
             forecastWeather = new Random();
@@ -21,10 +24,11 @@ namespace LemonadeStand
             weatherOfDay = new List<int>();
             accurateWeather = new List<string>();
         }
+        
 
+        //determines forecast for everyday of the week
         public void DetermineForecast()
         {
-            
 
             for (int i = 0; i < 7; i++)
             {
@@ -46,10 +50,14 @@ namespace LemonadeStand
                 
             }
         }
+
+
+        //determines the actual weather of the day
         public void DetermineWeather()
         {
             int result = 0;
-            result = forecastWeather.Next(1, 7);//randomizes a number between 1-5. A number between (1-3) will return the forecasted weather, otherwise weather will change.
+            //randomizes a number between 1-5. A number between (1-3) will return the forecasted weather, otherwise weather will change.
+            result = forecastWeather.Next(1, 7);
             if (weatherOfDay[dayCounter] < 3)
             {
                 if(result <= 5)

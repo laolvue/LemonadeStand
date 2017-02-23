@@ -10,6 +10,7 @@ namespace LemonadeStand
 {
     public class Store
     {
+        //member variables
         Inventory inventory;
         Player player;
         Customer customer;
@@ -22,8 +23,9 @@ namespace LemonadeStand
         public double potentialSales;
         public double tip;
         public double tipCheck;
-        Regex letters;
         Regex numbers;
+
+        //constructor
         public Store(double budgetRemaining)
         {
             inventory = new Inventory();
@@ -45,11 +47,13 @@ namespace LemonadeStand
             return player.GetPlayerName;
         }
           
+        //displays ingredient costs
         public void DisplayInventory()
         {
             Console.WriteLine($"\nInventory costs:\n${inventory.costOfPitcher.ToString("0.00")}/pitcher of water\t${inventory.costOfLemon.ToString("0.00")}/lemon\t${inventory.costOfSugar.ToString("0.00")}/sugar\t${inventory.costOfIce.ToString("0.00")}/4 ice cubes");
         }
 
+        //add pitcher
         public void BuyPitcher(string question)
         {
             inventory.pitcher.Clear();
@@ -61,6 +65,7 @@ namespace LemonadeStand
 
         }
 
+        //add lemon
         public void BuyLemon(string question)
         {
             inventory.lemon.Clear();
@@ -71,6 +76,8 @@ namespace LemonadeStand
                 inventory.AddLemon();
             }
         }
+
+        //add sugar
         public void BuySugar(string question)
         {
             inventory.sugar.Clear();
@@ -81,8 +88,11 @@ namespace LemonadeStand
                 inventory.AddSugar();
             }
         }
+
+        //add sugar
         public void BuyIce(string question)
         {
+            Console.ResetColor();
             inventory.ice.Clear();
             int ice = PromptInputNumber(question, TestNumber);
             for (int i = 0; i < ice; i++)
@@ -91,88 +101,62 @@ namespace LemonadeStand
             }
         }
         
+        //calculate budget after user buys pitchers
         public double CalculateBudgetGivenPitchers()
         {
             budget -= (inventory.pitcher.Count * inventory.costOfPitcher);
             return (budget);
         }
-        
-        public double CalculateBudgetGivenLemons(Action<string>buyLemon,string question)
+
+        //calculate budget after user buys ingredients
+        public double CalculateBudget(Action<string>buyIngredient,string question,int ingredient)
         {
+            int count = 0;
+            string needMoreIngredients ="";
             do
             {
-                buyLemon(question);
-                if (inventory.lemon.Count == 0 && inventory.pitcher.Count > 0)
+                buyIngredient(question);
+                if (ingredient == 1)
+                {
+                    count = inventory.lemon.Count();
+                    needMoreIngredients = ("You need to buy atleast 1 lemon!");
+                }
+                else if (ingredient == 2)
+                {
+                    count = inventory.sugar.Count();
+                    needMoreIngredients = ("You need to buy atleast 1 sugar cube!");
+                }
+                else if (ingredient == 3)
+                {
+                    count = inventory.ice.Count();
+                    needMoreIngredients = ("You need to buy atleast 1 pack of ice!");
+                }
+                if (count == 0 && inventory.pitcher.Count > 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("You need to buy atleast 1 lemon/pitcher!");
+                    Console.WriteLine(needMoreIngredients);
                     Console.ResetColor();
                 }
-                else if(inventory.pitcher.Count == 0 && inventory.lemon.Count > 0)
+                else if(inventory.pitcher.Count == 0 && count > 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("You didn't buy a pitcher, so You don't need to buy any ingredients.");
                     Console.ResetColor();
                 }
-            } while (inventory.lemon.Count == 0 && inventory.pitcher.Count > 0);
+            } while (count == 0 && inventory.pitcher.Count > 0);
             
-            budget -= (inventory.pitcher.Count * inventory.lemon.Count * inventory.costOfLemon);
+            budget -= (inventory.pitcher.Count * count * inventory.costOfLemon);
             Console.ForegroundColor = ConsoleColor.Cyan;
             return (budget);
         }
         
-        public double CalculateBudgetGivenSugar(Action<string> buySugar, string question)
-        {
-            do
-            {
-                buySugar(question);
-                if (inventory.sugar.Count == 0 && inventory.pitcher.Count > 0)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("You need to buy atleast 1 sugar cube/pitcher!");
-                    Console.ResetColor();
-                }
-                else if (inventory.pitcher.Count == 0 && inventory.sugar.Count > 0)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("You didn't buy a pitcher, so You don't need to buy any ingredients.");
-                    Console.ResetColor();
-                }
-            } while (inventory.sugar.Count == 0 && inventory.pitcher.Count > 0);
-
-            budget -= (inventory.pitcher.Count * inventory.sugar.Count * inventory.costOfSugar);
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            return (budget);
-        }
-        public double CalculateBudgetGivenIce(Action<string> buyIce, string question)
-        {
-            do
-            {
-                buyIce(question);
-                if (inventory.ice.Count == 0 && inventory.pitcher.Count > 0)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("You need to buy atleast 1 ice pack/pitcher!");
-                    Console.ResetColor();
-                    
-                }
-                else if (inventory.pitcher.Count == 0 && inventory.ice.Count > 0)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("You didn't buy a pitcher, so You don't need to buy any ingredients.");
-                    Console.ResetColor();
-                }
-            } while (inventory.ice.Count == 0 && inventory.pitcher.Count > 0);
-
-            budget -= (inventory.pitcher.Count * inventory.ice.Count * inventory.costOfIce);
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            return (budget);
-        }
-        
+        //increase price of lemonade by 10 cents
         public void IncreaseCharge()
         {
             inventory.costOfLemonade += .10;
         }
+
+        //decrease price of lemonade by 10 cents
         public void DecreaseCharge()
         {
             inventory.costOfLemonade -= .10;
@@ -182,13 +166,16 @@ namespace LemonadeStand
             return (inventory.costOfLemonade);
         }
 
-
-        public void DetermineNumberOfBuyers(string weather)
+        public void DetermineCustomers(string weather)
         {
             customer.DetermineNumberOfCustomers(weather);
+        }
+        public void DetermineNumberOfBuyers(string weather)
+        {
             customer.DetermineBuyers(weather, inventory.costOfLemonade, inventory.pitcher.Count);
         }
 
+        //calculate total sales
         public void DetermineSales()
         {
 
@@ -215,14 +202,15 @@ namespace LemonadeStand
                 sales += tip;
                 tipCheck = 2;
             }
-
         }
 
+        //calculate profit after expenses
         public void DetermineProfit()
         {
             profit = (budget + sales)-startingBudget;
         }
 
+        //reset variables for new day
         public void ResetNewDay()
         {
             startingBudget = (budget + sales);
@@ -233,6 +221,8 @@ namespace LemonadeStand
             tipCheck = 0;
             potentialSales = 0;
         }
+
+        //displays lemonade store results for the day
         public void DisplayResults()
         {
             Console.Clear();

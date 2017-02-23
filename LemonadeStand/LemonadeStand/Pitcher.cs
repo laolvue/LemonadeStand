@@ -8,14 +8,16 @@ namespace LemonadeStand
 {
     public class Pitcher
     {
-
+        //member variables
         public double cost;
         public int quantity;
+
+        //constructor
         public Pitcher()
         {
             quantity = 1;
             cost = 3.00;
         }
-        
+
     }
 }

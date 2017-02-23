@@ -9,7 +9,7 @@ namespace LemonadeStand
 {
     public class Inventory
     {
-
+        //member variables
         public List<Pitcher> pitcher;
         public List<Lemon> lemon;
         public List<Sugar> sugar;
@@ -20,6 +20,7 @@ namespace LemonadeStand
         public double costOfIce;
         public double costOfLemonade;
 
+        //constructor
         public Inventory()
         {
             lemon = new List<Lemon>();

@@ -9,9 +9,12 @@ namespace LemonadeStand
 {
     public class Sugar
     {
-
+        //member variables
         public double cost;
         public int quantity;
+
+
+        //constructor
         public Sugar()
         {
             quantity = 1;

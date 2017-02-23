@@ -8,8 +8,12 @@ namespace LemonadeStand
 {
     public class Lemon
     {
+
+        //member variables
         public double cost;
         public int quantity;
+
+        //constructor
         public Lemon()
         {
             quantity = 1;

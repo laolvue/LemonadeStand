@@ -16,6 +16,7 @@ namespace LemonadeStand
             dayNames = new List<string>();
         }
 
+        //add day names to day list
         public void DefineDays()
         {
             dayNames.Add("Monday");
