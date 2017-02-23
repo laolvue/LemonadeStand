@@ -8,9 +8,6 @@ namespace LemonadeStand
 {
     public class Ice
     {
-
-
-
         public double cost;
         public int quantity;
         public Ice()
@@ -18,8 +15,6 @@ namespace LemonadeStand
             quantity = 1;
             cost = .50;
         }
-
-
 
     }
 }

@@ -50,8 +50,5 @@ namespace LemonadeStand
         {
             ice.Add(new Ice());
         }
-
-
-
     }
 }

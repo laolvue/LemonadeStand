@@ -58,7 +58,7 @@ namespace LemonadeStand
             Console.WriteLine("\nPress enter to continue...");
             Console.ReadLine();
         }
-
+        
         public void DetermineActualDayWeather()
         {
             weather.DetermineWeather();
@@ -82,24 +82,21 @@ namespace LemonadeStand
         public void BuyIngredients()
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("\nBuy ingredients! You need to buy atleast ONE OF EACH ingredient in order make ONE PITCHER of lemonade. \nRemember: 1 pitcher makes 10 cups of lemonade\nTip: Tasty lemonade = More sales!");
+            Console.WriteLine("\nBuy ingredients! You need to buy atleast ONE OF EACH ingredient in order make ONE PITCHER of lemonade. \nRemember: 1 pitcher makes 10 cups of lemonade\nTip: Pefect your recipe, and you can earn tips from customers!");
             Console.ResetColor();
             Console.ForegroundColor = ConsoleColor.White;
-            store.BuyPitcher("\nNumber of pitchers to make: ");
+            string promptUserToBuy = ("\nNumber of pitchers to make: ");
+            store.BuyPitcher(promptUserToBuy);
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenPitchers().ToString("0.00")}");
-            Console.ForegroundColor = ConsoleColor.White;
-            store.BuyLemon("Number of lemon to buy: ");
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenLemons().ToString("0.00")}");
-            Console.ForegroundColor = ConsoleColor.White;
-            store.BuySugar("Number of sugar cubes to buy: ");
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenSugar().ToString("0.00")}");
-            Console.ForegroundColor = ConsoleColor.White;
-            store.BuyIce("Number of ice packs to buy: ");
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenIce().ToString("0.00")}");
+            Console.ResetColor();
+            promptUserToBuy = ("Number of lemon to buy: ");
+            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenLemons(store.BuyLemon,promptUserToBuy).ToString("0.00")}");
+            Console.ResetColor();
+            promptUserToBuy = ("Number of sugar cubes to buy: ");
+            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenSugar(store.BuySugar,promptUserToBuy).ToString("0.00")}");
+            promptUserToBuy = ("Number of ice packs to buy: ");
+            Console.WriteLine($"Budget remaining: ${store.CalculateBudgetGivenIce(store.BuyIce,promptUserToBuy).ToString("0.00")}");
             Console.ResetColor();
         }
         

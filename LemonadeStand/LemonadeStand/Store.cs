@@ -12,10 +12,6 @@ namespace LemonadeStand
         Inventory inventory;
         Player player;
         Customer customer;
-
-
-
-
         public double budget;
         public double startingBudget;
         public double sales;
@@ -65,8 +61,9 @@ namespace LemonadeStand
         public void BuyLemon(string question)
         {
             inventory.lemon.Clear();
-            int pitchers = errorCheck.PromptInputNumber(question, errorCheck.TestNumber);
-            for (int i = 0; i < pitchers; i++)
+            int lemon = errorCheck.PromptInputNumber(question, errorCheck.TestNumber);
+
+            for (int i = 0; i < lemon; i++)
             {
                 inventory.AddLemon();
             }
@@ -74,8 +71,9 @@ namespace LemonadeStand
         public void BuySugar(string question)
         {
             inventory.sugar.Clear();
-            int pitchers = errorCheck.PromptInputNumber(question, errorCheck.TestNumber);
-            for (int i = 0; i < pitchers; i++)
+            int sugar = errorCheck.PromptInputNumber(question, errorCheck.TestNumber);
+
+            for (int i = 0; i < sugar; i++)
             {
                 inventory.AddSugar();
             }
@@ -83,8 +81,8 @@ namespace LemonadeStand
         public void BuyIce(string question)
         {
             inventory.ice.Clear();
-            int pitchers = errorCheck.PromptInputNumber(question, errorCheck.TestNumber);
-            for (int i = 0; i < pitchers; i++)
+            int ice = errorCheck.PromptInputNumber(question, errorCheck.TestNumber);
+            for (int i = 0; i < ice; i++)
             {
                 inventory.AddIce();
             }
@@ -96,10 +94,11 @@ namespace LemonadeStand
             return (budget);
         }
         
-        public double CalculateBudgetGivenLemons()
+        public double CalculateBudgetGivenLemons(Action<string>buyLemon,string question)
         {
             do
             {
+                buyLemon(question);
                 if (inventory.lemon.Count == 0 && inventory.pitcher.Count > 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -115,13 +114,15 @@ namespace LemonadeStand
             } while (inventory.lemon.Count == 0 && inventory.pitcher.Count > 0);
             
             budget -= (inventory.pitcher.Count * inventory.lemon.Count * inventory.lemon[0].cost);
+            Console.ForegroundColor = ConsoleColor.Cyan;
             return (budget);
         }
         
-        public double CalculateBudgetGivenSugar()
+        public double CalculateBudgetGivenSugar(Action<string> buySugar, string question)
         {
             do
             {
+                buySugar(question);
                 if (inventory.sugar.Count == 0 && inventory.pitcher.Count > 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -137,17 +138,20 @@ namespace LemonadeStand
             } while (inventory.sugar.Count == 0 && inventory.pitcher.Count > 0);
 
             budget -= (inventory.pitcher.Count * inventory.sugar.Count * inventory.sugar[0].cost);
+            Console.ForegroundColor = ConsoleColor.Cyan;
             return (budget);
         }
-        public double CalculateBudgetGivenIce()
+        public double CalculateBudgetGivenIce(Action<string> buyIce, string question)
         {
             do
             {
+                buyIce(question);
                 if (inventory.ice.Count == 0 && inventory.pitcher.Count > 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("You need to buy atleast 1 ice pack/pitcher!");
                     Console.ResetColor();
+                    
                 }
                 else if (inventory.pitcher.Count == 0 && inventory.ice.Count > 0)
                 {
@@ -158,6 +162,7 @@ namespace LemonadeStand
             } while (inventory.ice.Count == 0 && inventory.pitcher.Count > 0);
 
             budget -= (inventory.pitcher.Count * inventory.ice.Count * inventory.ice[0].cost);
+            Console.ForegroundColor = ConsoleColor.Cyan;
             return (budget);
         }
         
@@ -250,4 +255,4 @@ namespace LemonadeStand
             Console.ResetColor();
         }
     }
-    }
+}
