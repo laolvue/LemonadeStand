@@ -10,19 +10,17 @@ namespace LemonadeStand
     {
         ErrorCheck errorCheck;
         Store store;
-        Weather weather;
-        Day day;
         public int gameRound;
         public UserInterface()
         {
             errorCheck = new ErrorCheck();
-            day = new Day();
             
         }
 
 
         public void DisplayGreetings()
         {
+            gameRound = 0;
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Welcome to LEMONADE STAND!\nThe object of the game is to run your own lemonade stand and try to turn a profit by the end of the week.");
             Console.ResetColor();
@@ -41,17 +39,15 @@ namespace LemonadeStand
             Console.WriteLine(store.GetName());
         }
 
-        public void DisplayWeather()
+        public void DisplayWeather(Day day)
         {
-            gameRound = 0;
-            weather = new Weather(gameRound);
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("Here's a look at your weather forecast for this week: ");
-            weather.DetermineForecast();
+            day.weather.DetermineForecast();
             day.DefineDays();
-            string displayForecast = ($"{day.dayNames[0]}: {weather.forecast[0]}\t\t{day.dayNames[1]}: {weather.forecast[1]}\t\t{day.dayNames[2]}: {weather.forecast[2]}\t\t");
-            displayForecast += ($"{day.dayNames[3]}: {weather.forecast[3]}\n{day.dayNames[4]}: {weather.forecast[4]}\t\t{day.dayNames[5]}: {weather.forecast[5]}\t\t{day.dayNames[6]}: {weather.forecast[6]}");
+            string displayForecast = ($"{day.dayNames[0]}: {day.weather.forecast[0]}\t\t{day.dayNames[1]}: {day.weather.forecast[1]}\t\t{day.dayNames[2]}: {day.weather.forecast[2]}\t\t");
+            displayForecast += ($"{day.dayNames[3]}: {day.weather.forecast[3]}\n{day.dayNames[4]}: {day.weather.forecast[4]}\t\t{day.dayNames[5]}: {day.weather.forecast[5]}\t\t{day.dayNames[6]}: {day.weather.forecast[6]}");
             Console.WriteLine(displayForecast);
             Console.WriteLine("**Remember that this is only a forecast. The weather CAN change**");
             Console.ResetColor();
@@ -59,18 +55,18 @@ namespace LemonadeStand
             Console.ReadLine();
         }
         
-        public void DetermineActualDayWeather()
+        public void DetermineActualDayWeather(Day day)
         {
-            weather.DetermineWeather();
+            day.weather.DetermineWeather();
         }
-        public void StartDay()
+        public void StartDay(Day day)
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"The Game is Starting... Good Luck {store.GetName()}!");
             Console.ResetColor();
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"\n\n{day.dayNames[gameRound]}'s forecast: {weather.forecast[gameRound]}\n{day.dayNames[gameRound]}'s actual weather: {weather.accurateWeather[gameRound]}\nYour starting budget is: ${store.startingBudget.ToString("0.00")}");
+            Console.WriteLine($"\n\n{day.dayNames[gameRound]}'s forecast: {day.weather.forecast[gameRound]}\n{day.dayNames[gameRound]}'s actual weather: {day.weather.accurateWeather[gameRound]}\nYour starting budget is: ${store.startingBudget.ToString("0.00")}");
             Console.ResetColor();
         }
 
@@ -100,7 +96,7 @@ namespace LemonadeStand
             Console.ResetColor();
         }
         
-        public void DetermineOverBuy()
+        public bool DetermineOverBuy(Day day)
         {
             if (store.budget <= 0)
             {
@@ -111,10 +107,12 @@ namespace LemonadeStand
                 Console.ReadLine();
                 Console.Clear();
                 store.budget = store.startingBudget;
-                StartDay();
+                StartDay(day);
                 DisplayStoreInventory();
-                BuyIngredients();
+                return (false);
             }
+            else
+                return true;
         }
 
         public void DetermineCostOfLemonade()
@@ -143,9 +141,9 @@ namespace LemonadeStand
             } while (input != 0);
         }
 
-        public void DetermineBuyers()
+        public void DetermineBuyers(Day day)
         {
-            store.DetermineNumberOfBuyers(weather.accurateWeather[weather.dayCounter]);
+            store.DetermineNumberOfBuyers(day.weather.accurateWeather[day.weather.dayCounter]);
         }
 
         public void DisplayDayResults()
@@ -183,10 +181,10 @@ namespace LemonadeStand
                 Console.ResetColor();
             }
         }
-        public void StartNewRound()
+        public void StartNewRound(Day day)
         {
             gameRound++;
-            weather.dayCounter = gameRound;
+            day.weather.dayCounter = gameRound;
             if(gameRound == 7)
             {
                 return;

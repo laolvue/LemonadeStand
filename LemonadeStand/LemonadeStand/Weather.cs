@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace LemonadeStand
 {
-    class Weather
+    public class Weather
     {
         public Random forecastWeather;
         public List<string> forecast;
         public List<string> accurateWeather;
         public List<int> weatherOfDay;
         public int dayCounter;
-        public Weather(int gameRound)
+        public Weather(int restartGameCounter)
         {
             forecastWeather = new Random();
-            dayCounter = gameRound;
+            dayCounter = restartGameCounter;
             forecast = new List<string>();
             weatherOfDay = new List<int>();
             accurateWeather = new List<string>();

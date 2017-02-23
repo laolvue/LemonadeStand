@@ -9,10 +9,11 @@ namespace LemonadeStand
     public class Game
     {
         UserInterface userInterface= new UserInterface();
+        Day day;
 
         public Game()
         {
-
+            
         }
 
         public void StartGame()
@@ -22,19 +23,25 @@ namespace LemonadeStand
             {
                 userInterface.DisplayGreetings();
                 userInterface.PromptName();
-                userInterface.DisplayWeather();
+                day = new Day();
+                userInterface.DisplayWeather(day);
                 while (userInterface.gameRound <= 6)
                 {
-                    userInterface.DetermineActualDayWeather();
-                    userInterface.StartDay();
+                    userInterface.DetermineActualDayWeather(day);
+                    userInterface.StartDay(day);
                     userInterface.DisplayStoreInventory();
-                    userInterface.BuyIngredients();
-                    userInterface.DetermineOverBuy();
+                    bool test;
+                    do
+                    {
+                        userInterface.BuyIngredients();
+                        test = userInterface.DetermineOverBuy(day);
+                    } while (!test);
+                    
                     userInterface.DetermineCostOfLemonade();
-                    userInterface.DetermineBuyers();
+                    userInterface.DetermineBuyers(day);
                     userInterface.DisplayDayResults();
                     userInterface.DetermineLose();
-                    userInterface.StartNewRound();
+                    userInterface.StartNewRound(day);
                 }
                 restart = userInterface.StartNewGame();
             }

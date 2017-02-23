@@ -113,7 +113,7 @@ namespace LemonadeStand
                 }
             } while (inventory.lemon.Count == 0 && inventory.pitcher.Count > 0);
             
-            budget -= (inventory.pitcher.Count * inventory.lemon.Count * inventory.lemon[0].cost);
+            budget -= (inventory.pitcher.Count * inventory.lemon.Count * inventory.costOfLemon);
             Console.ForegroundColor = ConsoleColor.Cyan;
             return (budget);
         }
@@ -137,7 +137,7 @@ namespace LemonadeStand
                 }
             } while (inventory.sugar.Count == 0 && inventory.pitcher.Count > 0);
 
-            budget -= (inventory.pitcher.Count * inventory.sugar.Count * inventory.sugar[0].cost);
+            budget -= (inventory.pitcher.Count * inventory.sugar.Count * inventory.costOfSugar);
             Console.ForegroundColor = ConsoleColor.Cyan;
             return (budget);
         }
@@ -161,7 +161,7 @@ namespace LemonadeStand
                 }
             } while (inventory.ice.Count == 0 && inventory.pitcher.Count > 0);
 
-            budget -= (inventory.pitcher.Count * inventory.ice.Count * inventory.ice[0].cost);
+            budget -= (inventory.pitcher.Count * inventory.ice.Count * inventory.costOfIce);
             Console.ForegroundColor = ConsoleColor.Cyan;
             return (budget);
         }

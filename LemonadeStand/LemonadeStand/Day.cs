@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace LemonadeStand
 {
-    class Day
+    public class Day
     {
-
+        public Weather weather;
         public List<string> dayNames;
         public Day()
         {
+            weather = new Weather(0);
             dayNames = new List<string>();
         }
 
