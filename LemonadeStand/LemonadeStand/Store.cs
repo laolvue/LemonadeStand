@@ -8,11 +8,10 @@ using System.Text.RegularExpressions;
 
 namespace LemonadeStand
 {
-    public class Store
+    public class Store: INameable
     {
         //member variables
         Inventory inventory;
-        public Player player;
         public Customer customer;
         public double budget;
         public double startingBudget;
@@ -24,13 +23,16 @@ namespace LemonadeStand
         public double potentialSales;
         public double tip;
         public double tipCheck;
+        public int winLose;
+        public string playerName;
         Regex numbers;
+
 
         //constructor
         public Store(double budgetRemaining)
         {
             inventory = new Inventory();
-            player = new Player();
+            GetName();
             customer = new Customer();
             budget = budgetRemaining;
             startingBudget = budgetRemaining;
@@ -38,9 +40,12 @@ namespace LemonadeStand
             numbers = new Regex(@"^[0-9]*$");
         }
 
-        public void PromptUserName()
+
+
+        public void GetName()
         {
-            player.PromptName();
+            Console.Write("Please enter your name: ");
+            playerName = Console.ReadLine();
         }
 
         //displays ingredient costs
@@ -166,6 +171,7 @@ namespace LemonadeStand
         {
             customer.DetermineNumberOfCustomers(weather);
         }
+
         public void DetermineNumberOfBuyers(string weather)
         {
             customer.DetermineBuyers(weather, inventory.costOfLemonade, inventory.pitcher.Count);

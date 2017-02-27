@@ -68,7 +68,7 @@ namespace LemonadeStand
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"The Game is Starting... Good Luck {store.player.playerName}!");
+            Console.WriteLine($"The Game is Starting... Good Luck {store.playerName}!");
             Console.ResetColor();
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"\n\n{day.dayNames[gameRound]}'s forecast: {day.weather.forecast[gameRound]}\n{day.dayNames[gameRound]}'s actual weather: {day.weather.accurateWeather[gameRound]}\nYour starting budget is: ${store.startingBudget.ToString("0.00")}");
@@ -171,7 +171,7 @@ namespace LemonadeStand
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"\n\nYOU LOSE! You have gone bankrupt with a balance of: -${(store.startingBudget*-1).ToString("0.00")}");
-                store.player.winLose = 1;
+                store.winLose = 1;
                 Console.ResetColor();
                 
             }
@@ -179,14 +179,14 @@ namespace LemonadeStand
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"\n\nYOU LOSE! You do not have enough money to purchase ingredients for your business. Your balance: ${(store.startingBudget).ToString("0.00")}");
-                store.player.winLose = 1;
+                store.winLose = 1;
                 Console.ResetColor();
             }
             else if(store.startingBudget <= 10 && store.startingBudget >=4.50 && gameRound == 6)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"\n\nYou LOSE! You were unable to make any profits. Your ending balance for the week is: ${store.startingBudget.ToString("0.00")}");
-                store.player.winLose = 1;
+                store.winLose = 1;
                 Console.ResetColor();
             }
             else if (store.startingBudget > 10 && gameRound == 6 && gameMode ==1 || gameMode==3)
@@ -221,7 +221,7 @@ namespace LemonadeStand
         {
             for (int j = 0; j < store.Count; j++)
             {
-                Console.WriteLine($"{store[j].player.playerName}'s results for the day:");
+                Console.WriteLine($"{store[j].playerName}'s results for the day:");
                 DisplayDayResults(store[j]);
                 store[j].ResetNewDay();
                 Console.WriteLine($"Your remaining balance is: ${store[j].startingBudget.ToString("0.00")}");
@@ -267,10 +267,10 @@ namespace LemonadeStand
         //displays winner in playerVSplayer mode
         public void DisplayWinner(List<Store> store)
         {
-            foreach (Store bla in store)
+            foreach (Store player in store)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"{bla.player.playerName} WINS!\nYour final balance: ${bla.startingBudget.ToString("0.00")}");
+                Console.WriteLine($"{player.playerName} WINS!\nYour final balance: ${player.startingBudget.ToString("0.00")}");
                 Console.ResetColor();
             }
         }

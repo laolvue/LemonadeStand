@@ -34,6 +34,10 @@ namespace LemonadeStand
             costOfLemonade = .50;
         }
 
+        public virtual void AddInventory()
+        {
+
+        }
 
         public void AddPitcher()
         {

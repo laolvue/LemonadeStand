@@ -19,3 +19,7 @@ namespace LemonadeStand
         }
     }
 }
+/*
+ * My "store" class is the "lemonade store", not a store to buy inventory.
+ *  This eliminates the need for a player class, because a lemonade store is equivalent to a player.
+ */

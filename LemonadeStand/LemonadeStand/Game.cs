@@ -65,7 +65,7 @@ namespace LemonadeStand
                     break;*/
                 default:
                     Console.WriteLine("\nNot a valid entry");
-                    userInterface.PromptGameMode();
+                    gameMode = userInterface.PromptGameMode();
                     AddPlayers();
                     break;
             }
@@ -77,7 +77,7 @@ namespace LemonadeStand
             int k = 0;
             do
             {
-                if (store[k].player.winLose == 1)
+                if (store[k].winLose == 1)
                 {
                     store.RemoveAt(k);
                     k = 0;
