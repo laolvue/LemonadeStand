@@ -8,7 +8,7 @@ namespace LemonadeStand
 {
     interface INameable//interface for naming players or AI
     {
-        void GetName(); 
+        void SetName(); 
 
     }
 }

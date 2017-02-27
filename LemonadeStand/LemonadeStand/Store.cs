@@ -32,7 +32,7 @@ namespace LemonadeStand
         public Store(double budgetRemaining)
         {
             inventory = new Inventory();
-            GetName();
+            SetName();
             customer = new Customer();
             budget = budgetRemaining;
             startingBudget = budgetRemaining;
@@ -42,7 +42,7 @@ namespace LemonadeStand
 
 
 
-        public void GetName()
+        public void SetName()
         {
             Console.Write("Please enter your name: ");
             playerName = Console.ReadLine();
