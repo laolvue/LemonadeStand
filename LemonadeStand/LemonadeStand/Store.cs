@@ -12,8 +12,8 @@ namespace LemonadeStand
     {
         //member variables
         Inventory inventory;
-        Player player;
-        Customer customer;
+        public Player player;
+        public Customer customer;
         public double budget;
         public double startingBudget;
         public double sales;
@@ -43,11 +43,6 @@ namespace LemonadeStand
             player.PromptName();
         }
 
-        public string GetName()
-        {
-            return player.GetPlayerName;
-        }
-          
         //displays ingredient costs
         public void DisplayInventory()
         {
@@ -232,7 +227,6 @@ namespace LemonadeStand
         //displays lemonade store results for the day
         public void DisplayResults()
         {
-            Console.Clear();
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"Total customer visits: {customer.totalCustomers}");
             DetermineSales();

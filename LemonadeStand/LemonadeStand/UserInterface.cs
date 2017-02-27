@@ -10,7 +10,6 @@ namespace LemonadeStand
     public class UserInterface
     {
         //member variables
-        public int gameRound;
         Regex numbers;
 
         //constructor
@@ -23,7 +22,6 @@ namespace LemonadeStand
         //display greetings
         public void DisplayGreetings()
         {
-            gameRound = 0;
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Welcome to LEMONADE STAND!\nThe object of the game is to run your own lemonade stand and try to turn a profit by the end of the week.");
             Console.ResetColor();
@@ -35,11 +33,11 @@ namespace LemonadeStand
             Console.ResetColor();
         }
 
-        //prompt user name
-        public void PromptName(Store store)
+        //prompt game mode user wants to play
+        public int PromptGameMode()
         {
-            store.PromptUserName();
-            Console.WriteLine(store.GetName());
+            int gameMode = PromptInputNumber("Please enter the game mode you would like to play:\n1: Single Player\t\t2: Player vs Player\n\nGame Mode: ", TestNumber);
+            return (gameMode);
         }
 
         //display weather forecast for the week
@@ -66,11 +64,11 @@ namespace LemonadeStand
         }
 
         //displays forecast, actual weather, and starting budget
-        public void StartDay(Day day, Store store)
+        public void StartDay(Day day, Store store, int gameRound)
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"The Game is Starting... Good Luck {store.GetName()}!");
+            Console.WriteLine($"The Game is Starting... Good Luck {store.player.playerName}!");
             Console.ResetColor();
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"\n\n{day.dayNames[gameRound]}'s forecast: {day.weather.forecast[gameRound]}\n{day.dayNames[gameRound]}'s actual weather: {day.weather.accurateWeather[gameRound]}\nYour starting budget is: ${store.startingBudget.ToString("0.00")}");
@@ -166,30 +164,32 @@ namespace LemonadeStand
             store.DisplayResults();
         }
 
-        //determine if player lost/win
-        public void DetermineLose(Store store)
+        //determine if player loses/wins
+        public void DisplayLoseWin(Store store, int gameRound, int playerAmount, int gameMode)
         {
             if (store.startingBudget <= 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"\n\nYOU LOSE! You have gone bankrupt with a balance of: -${(store.startingBudget*-1).ToString("0.00")}");
+                store.player.winLose = 1;
                 Console.ResetColor();
-                gameRound = 6;
+                
             }
             else if (store.startingBudget > 0 && store.startingBudget<4.50)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"\n\nYOU LOSE! You do not have enough money to purchase ingredients for your business. Your balance: ${(store.startingBudget).ToString("0.00")}");
+                store.player.winLose = 1;
                 Console.ResetColor();
-                gameRound = 6;
             }
             else if(store.startingBudget <= 10 && store.startingBudget >=4.50 && gameRound == 6)
             {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"\n\nYoOU LOSE! You were unable to make any profits. Your ending balance for the week is: ${store.startingBudget.ToString("0.00")}");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"\n\nYou LOSE! You were unable to make any profits. Your ending balance for the week is: ${store.startingBudget.ToString("0.00")}");
+                store.player.winLose = 1;
                 Console.ResetColor();
             }
-            else if (store.startingBudget > 10 && gameRound == 6)
+            else if (store.startingBudget > 10 && gameRound == 6 && gameMode ==1 || gameMode==3)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"\n\nYOU WIN! Your ending balance for the week is: ${store.startingBudget.ToString("0.00")}");
@@ -198,9 +198,9 @@ namespace LemonadeStand
         }
 
         //starts new day
-        public void StartNewRound(Day day,Store store)
+        public void StartNewRound(Day day, int gameRound)
         {
-            gameRound++;
+            
             day.weather.dayCounter = gameRound;
             if(gameRound == 7)
             {
@@ -209,18 +209,78 @@ namespace LemonadeStand
             else
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"\n\nGet ready for DAY {gameRound + 1}! Your remaining budget is: ${store.startingBudget.ToString("0.00")}");
+                Console.WriteLine($"Get ready for DAY {gameRound + 1}!");
                 Console.Write("\nPress Enter to continue...");
                 Console.ResetColor();
                 Console.ReadLine();
             }
         }
 
+        //displays results for the day
+        public void DisplayResults(List<Store> store, int gameRound, int gameMode)
+        {
+            for (int j = 0; j < store.Count; j++)
+            {
+                Console.WriteLine($"{store[j].player.playerName}'s results for the day:");
+                DisplayDayResults(store[j]);
+                store[j].ResetNewDay();
+                Console.WriteLine($"Your remaining balance is: ${store[j].startingBudget.ToString("0.00")}");
+                DisplayLoseWin(store[j], gameRound, store.Count, gameMode);
+                Console.ReadLine();
+                Console.Clear();
+
+            }
+        }
+
+
+
+        //determines winner in playervsplayer mode
+        public void DetermineWinner(int gameMode, List<Store> store)
+        {
+            int l = 0;
+            if (gameMode == 2)
+            {
+                while (store.Count > 1)
+                {
+                    if (store[l].startingBudget < store[(store.Count - 1)].startingBudget)
+                    {
+                        store.RemoveAt(l);
+                        l = 0;
+                    }
+                    else if (store[l].startingBudget > store[store.Count - 1].startingBudget)
+                    {
+                        store.RemoveAt(store.Count - 1);
+                        l = 0;
+                    }
+                    else if (store[l].startingBudget == store[store.Count - 1].startingBudget)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("There was a tie! No winner this game.");
+                        Console.ResetColor();
+                        break;
+                    }
+                }
+            }
+        }
+
+
+        //displays winner in playerVSplayer mode
+        public void DisplayWinner(List<Store> store)
+        {
+            foreach (Store bla in store)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"{bla.player.playerName} WINS!\nYour final balance: ${bla.startingBudget.ToString("0.00")}");
+                Console.ResetColor();
+            }
+        }
+
+
         //restarts new game
         public int StartNewGame()
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            int playAgain = PromptInputNumber("\nWould you like to play again?\t1: Yes\t2: No\n", TestNumber);
+            int playAgain = PromptInputNumber("Would you like to play again?\t1: Yes\t2: No\n", TestNumber);
             Console.ResetColor();
             Console.Clear();
             if(playAgain != 1 && playAgain != 2)
@@ -233,6 +293,7 @@ namespace LemonadeStand
             else
                 return (playAgain);
         }
+
 
         //method to validate user input is a number
         public bool TestNumber(string input)
@@ -264,6 +325,5 @@ namespace LemonadeStand
             int inputNumber = int.Parse(userInput);
             return inputNumber;
         }
-
     }
 }

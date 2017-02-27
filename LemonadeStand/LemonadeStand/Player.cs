@@ -11,26 +11,20 @@ namespace LemonadeStand
     public class Player
     {
         //member variables
-        private string playerName;
+        public string playerName;
+        public int winLose;
         Regex letters;
 
         //constructor
         public Player()
         {
             letters = new Regex(@"^[a-zA-Z0-9 ]*$");
+            PromptName();
         }
         
         public void PromptName()
         {
-            playerName = PromptInputLetters("\nPlease enter your name: ", TestLetters);
-        }
-        
-        public string GetPlayerName
-        {
-            get
-            {
-                return playerName;
-            }
+            playerName = PromptInputLetters("Please enter your name: ", TestLetters);
         }
 
         //Method that validates user input is a letter or number, and returns the input if it's true
